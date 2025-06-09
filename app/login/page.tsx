@@ -462,10 +462,7 @@ export default function LoginPage() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <div className="w-20 h-20 rounded-xl shadow-md bg-blue-600 flex items-center justify-center text-white text-2xl font-bold">
-                  IT
-                </div>
-                <div className="accent-line absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-10 h-1 rounded-full" />
+                <img src="https://jlearn.it.kmitl.ac.th/_next/image/?url=%2Fit-kmitl.png&w=256&q=75" alt="" width={95}/>
               </motion.div>
             </motion.div>
 
