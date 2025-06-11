@@ -7,7 +7,10 @@ import Footer from '@/components/layout/Footer';
 import ProjectSearch from '@/components/projects/ProjectSearch';
 import ProjectFilters from '@/components/projects/ProjectFilters';
 import ProjectGrid from '@/components/projects/ProjectGrid';
+import CreateProjectModal from '@/components/projects/CreateProjectModal';
+import Toast from '@/components/ui/Toast';
 import { Project } from '@/components/projects/ProjectCard';
+import { ProjectFormData } from '@/components/projects/CreateProjectModal';
 
 // Demo data
 const projectsData: Project[] = [
@@ -119,6 +122,9 @@ export default function ProjectsPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentFilter, setCurrentFilter] = useState('ทั้งหมด');
   const [filteredProjects, setFilteredProjects] = useState(projectsData);
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
 
   // Filter projects based on search term and current filter
   useEffect(() => {
@@ -174,10 +180,41 @@ export default function ProjectsPage() {
   };
 
   const handleAddProject = () => {
-    const newProjectName = prompt('ชื่อโครงการใหม่ (เช่น ภาคการศึกษา 1/2568):');
-    if (newProjectName) {
-      alert(`กำลังสร้างโครงการ "${newProjectName}"`);
-    }
+    setShowCreateModal(true);
+  };
+
+  const handleCreateProject = (projectData: ProjectFormData) => {
+    console.log('Creating new project:', projectData);
+    
+    // สร้างโปรเจคใหม่จากข้อมูลที่กรอก
+    const newProject: Project = {
+      id: `${projectData.academicYear}-${projectData.semester}`,
+      title: projectData.title || `ภาคการศึกษา ${projectData.semester}/${projectData.academicYear}`,
+      description: projectData.description,
+      status: 'แบบร่าง',
+      subjects: 0,
+      schedules: 0,
+      conflicts: 0,
+      members: projectData.members.map(memberId => ({
+        id: memberId,
+        name: `สมาชิก ${memberId}`,
+        role: 'สมาชิก'
+      })),
+      progress: 0,
+      lastUpdated: 'เมื่อสักครู่',
+      icon: 'calendar'
+    };
+    
+    // ในระบบจริงจะส่งข้อมูลไป API
+    // แต่ตอนนี้จะ simulate การเพิ่มโปรเจค
+    setToastMessage(`สร้างโครงการ "${newProject.title}" สำเร็จ!`);
+    setShowToast(true);
+    
+    // ปิด modal
+    setShowCreateModal(false);
+    
+    // Refresh หน้า (ในระบบจริงจะ fetch ข้อมูลใหม่)
+    // setTimeout(() => window.location.reload(), 2000);
   };
 
   const resetAllFilters = () => {
@@ -301,6 +338,21 @@ export default function ProjectsPage() {
 
       {/* Footer */}
       <Footer />
+
+      {/* Create Project Modal */}
+      <CreateProjectModal
+        isOpen={showCreateModal}
+        onClose={() => setShowCreateModal(false)}
+        onSubmit={handleCreateProject}
+      />
+
+      {/* Toast Notification */}
+      <Toast
+        show={showToast}
+        onClose={() => setShowToast(false)}
+        message={toastMessage}
+        type="success"
+      />
     </div>
   );
 }
