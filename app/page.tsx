@@ -11,7 +11,7 @@ import CreateProjectModal from '@/components/projects/CreateProjectModal';
 import Toast from '@/components/ui/Toast';
 import { Project } from '@/components/projects/ProjectCard';
 import { ProjectFormData } from '@/components/projects/CreateProjectModal';
-
+import AcademicCalendar from '@/components/projects/AcademicCalendar';
 // Demo data
 const projectsData: Project[] = [
   {
@@ -282,7 +282,6 @@ export default function ProjectsPage() {
 
         {/* Search Section */}
         <ProjectSearch searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-
         {/* Projects Section */}
         <motion.div 
           className="mb-8"
@@ -302,13 +301,15 @@ export default function ProjectsPage() {
               onQuickFilter={quickFilter}
             />
           </div>
-
+          
           {/* Projects Grid */}
           <ProjectGrid
             projects={filteredProjects}
             onProjectClick={handleProjectClick}
             onAddProject={handleAddProject}
           />
+
+          
         </motion.div>
       </main>
 

@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import Modal from '../../ui/Modal';
+import Modal from '@/components/ui/Modal';
 
 interface HelpModalProps {
   isOpen: boolean;
