@@ -298,7 +298,7 @@ export default function CurriculumManagement() {
     // Sort
     filtered.sort((a, b) => {
       let aValue: any, bValue: any;
-      
+
       switch (sortBy) {
         case 'name':
           aValue = a.title.toLowerCase();
@@ -415,14 +415,14 @@ export default function CurriculumManagement() {
     try {
       await new Promise(resolve => setTimeout(resolve, 1000));
 
-      setCurriculums(prev => prev.map(c => 
-        c.id === selectedCurriculum.id 
-          ? { 
-              ...c, 
-              ...formData, 
-              lastUpdated: 'เมื่อสักครู่',
-              updatedBy: 'อ.สมชาย ใจดี'
-            }
+      setCurriculums(prev => prev.map(c =>
+        c.id === selectedCurriculum.id
+          ? {
+            ...c,
+            ...formData,
+            lastUpdated: 'เมื่อสักครู่',
+            updatedBy: 'อ.สมชาย ใจดี'
+          }
           : c
       ));
 
@@ -531,10 +531,10 @@ export default function CurriculumManagement() {
   };
 
   const handleExport = () => {
-    const data = selectedCurriculums.length > 0 
+    const data = selectedCurriculums.length > 0
       ? curriculums.filter(c => selectedCurriculums.includes(c.id))
       : filteredCurriculums;
-    
+
     // Simulate export
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
@@ -601,13 +601,13 @@ export default function CurriculumManagement() {
   };
 
   const toggleSelectCurriculum = (id: string) => {
-    setSelectedCurriculums(prev => 
+    setSelectedCurriculums(prev =>
       prev.includes(id) ? prev.filter(cid => cid !== id) : [...prev, id]
     );
   };
 
   const toggleSelectAll = () => {
-    setSelectedCurriculums(prev => 
+    setSelectedCurriculums(prev =>
       prev.length === currentCurriculums.length ? [] : currentCurriculums.map(c => c.id)
     );
   };
@@ -695,6 +695,7 @@ export default function CurriculumManagement() {
       )}
 
       {/* Header */}
+      <Header />
       <div className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="py-8">
@@ -703,7 +704,7 @@ export default function CurriculumManagement() {
               <div className="flex items-center space-x-4">
                 <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
                   <svg className="w-6 h-6 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z"/>
+                    <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z" />
                   </svg>
                 </div>
                 <div>
@@ -810,7 +811,7 @@ export default function CurriculumManagement() {
                       whileTap={{ scale: 0.98 }}
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                       </svg>
                       <span>ส่งออก ({selectedCurriculums.length})</span>
                     </motion.button>
@@ -822,7 +823,7 @@ export default function CurriculumManagement() {
                       whileTap={{ scale: 0.98 }}
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                       </svg>
                       <span>ลบ ({selectedCurriculums.length})</span>
                     </motion.button>
@@ -837,7 +838,7 @@ export default function CurriculumManagement() {
                   whileTap={{ scale: 0.98 }}
                 >
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd"/>
+                    <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
                   </svg>
                   <span>เพิ่มหลักสูตร (Ctrl+N)</span>
                 </motion.button>
@@ -873,7 +874,7 @@ export default function CurriculumManagement() {
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 min-h-[60vh]">
         {/* Curriculum Grid */}
-        <motion.div 
+        <motion.div
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -904,7 +905,7 @@ export default function CurriculumManagement() {
                 <div className="flex items-start space-x-4 mb-4" onClick={() => openDetailsModal(curriculum)}>
                   <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
                     <svg className="w-6 h-6 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.669 0-3.218.51-4.5 1.385V4.804z"/>
+                      <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.669 0-3.218.51-4.5 1.385V4.804z" />
                     </svg>
                   </div>
                   <div className="flex-1 min-w-0">
@@ -954,7 +955,7 @@ export default function CurriculumManagement() {
                   <div className="text-xs text-gray-500">
                     อัพเดท: {curriculum.lastUpdated}
                   </div>
-                  
+
                   <div className="flex items-center space-x-2">
                     <motion.button
                       onClick={(e) => {
@@ -967,7 +968,7 @@ export default function CurriculumManagement() {
                       title="แก้ไข"
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                       </svg>
                     </motion.button>
 
@@ -982,7 +983,7 @@ export default function CurriculumManagement() {
                       title="ทำสำเนา"
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
                       </svg>
                     </motion.button>
 
@@ -997,7 +998,7 @@ export default function CurriculumManagement() {
                       title="ลบ"
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                       </svg>
                     </motion.button>
                   </div>
@@ -1013,7 +1014,7 @@ export default function CurriculumManagement() {
             <div className="text-sm text-gray-500">
               แสดง {startIndex + 1}-{Math.min(endIndex, filteredCurriculums.length)} จาก {filteredCurriculums.length} รายการ
             </div>
-            
+
             <div className="flex items-center space-x-2">
               {/* Previous Button */}
               <motion.button
@@ -1024,7 +1025,7 @@ export default function CurriculumManagement() {
                 whileTap={{ scale: 0.95 }}
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z" clipRule="evenodd"/>
+                  <path fillRule="evenodd" d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z" clipRule="evenodd" />
                 </svg>
               </motion.button>
 
@@ -1040,7 +1041,7 @@ export default function CurriculumManagement() {
                 } else {
                   page = currentPage - 2 + i;
                 }
-                
+
                 if (page > 0 && page <= totalPages) {
                   return (
                     <PageButton
@@ -1063,7 +1064,7 @@ export default function CurriculumManagement() {
                 whileTap={{ scale: 0.95 }}
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clipRule="evenodd"/>
+                  <path fillRule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clipRule="evenodd" />
                 </svg>
               </motion.button>
             </div>
@@ -1072,7 +1073,7 @@ export default function CurriculumManagement() {
 
         {/* Empty State */}
         {filteredCurriculums.length === 0 && (
-          <motion.div 
+          <motion.div
             className="text-center py-12"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -1080,15 +1081,15 @@ export default function CurriculumManagement() {
           >
             <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <svg className="w-12 h-12 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.669 0-3.218.51-4.5 1.385V4.804z"/>
+                <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.669 0-3.218.51-4.5 1.385V4.804z" />
               </svg>
             </div>
             <h3 className="text-lg font-semibold text-gray-900 mb-2">
               {searchTerm || currentFilter !== 'ทุกสถานะ' ? 'ไม่พบหลักสูตรที่ตรงเงื่อนไข' : 'ยังไม่มีหลักสูตร'}
             </h3>
             <p className="text-gray-500 mb-6">
-              {searchTerm || currentFilter !== 'ทุกสถานะ' 
-                ? 'ลองเปลี่ยนคำค้นหาหรือตัวกรอง' 
+              {searchTerm || currentFilter !== 'ทุกสถานะ'
+                ? 'ลองเปลี่ยนคำค้นหาหรือตัวกรอง'
                 : 'เริ่มต้นด้วยการเพิ่มหลักสูตรแรก'
               }
             </p>
@@ -1099,7 +1100,7 @@ export default function CurriculumManagement() {
               whileTap={{ scale: 0.98 }}
             >
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd"/>
+                <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
               </svg>
               <span>เพิ่มหลักสูตรแรก</span>
             </motion.button>
@@ -1168,23 +1169,22 @@ export default function CurriculumManagement() {
               initial={{ opacity: 0, x: 100 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 100 }}
-              className={`p-4 rounded-lg shadow-lg max-w-sm ${
-                toast.type === 'success' ? 'bg-green-500 text-white' :
+              className={`p-4 rounded-lg shadow-lg max-w-sm ${toast.type === 'success' ? 'bg-green-500 text-white' :
                 toast.type === 'error' ? 'bg-red-500 text-white' :
-                toast.type === 'warning' ? 'bg-yellow-500 text-white' :
-                'bg-blue-500 text-white'
-              }`}
+                  toast.type === 'warning' ? 'bg-yellow-500 text-white' :
+                    'bg-blue-500 text-white'
+                }`}
             >
               <div className="flex items-start space-x-3">
                 <div className="flex-shrink-0">
                   {toast.type === 'success' && (
                     <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                     </svg>
                   )}
                   {toast.type === 'error' && (
                     <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd"/>
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
                     </svg>
                   )}
                 </div>
@@ -1197,7 +1197,7 @@ export default function CurriculumManagement() {
                   className="flex-shrink-0 p-1 hover:bg-black hover:bg-opacity-20 rounded"
                 >
                   <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"/>
+                    <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
                   </svg>
                 </button>
               </div>
@@ -1213,21 +1213,20 @@ export default function CurriculumManagement() {
 }
 
 // Component: Page Button
-function PageButton({ page, currentPage, onClick }: { 
-  page: number; 
-  currentPage: number; 
-  onClick: (page: number) => void; 
+function PageButton({ page, currentPage, onClick }: {
+  page: number;
+  currentPage: number;
+  onClick: (page: number) => void;
 }) {
   const isActive = page === currentPage;
-  
+
   return (
     <motion.button
       onClick={() => onClick(page)}
-      className={`w-10 h-10 rounded-lg font-medium transition-colors ${
-        isActive 
-          ? 'bg-blue-500 text-white' 
-          : 'border border-gray-300 hover:bg-gray-50 text-gray-700'
-      }`}
+      className={`w-10 h-10 rounded-lg font-medium transition-colors ${isActive
+        ? 'bg-blue-500 text-white'
+        : 'border border-gray-300 hover:bg-gray-50 text-gray-700'
+        }`}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
     >
@@ -1281,7 +1280,7 @@ function CurriculumModal({
               className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
             >
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"/>
+                <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
               </svg>
             </button>
           </div>
@@ -1299,9 +1298,8 @@ function CurriculumModal({
                 type="text"
                 value={formData.title}
                 onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-                  formErrors.title ? 'border-red-500' : 'border-gray-300'
-                }`}
+                className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${formErrors.title ? 'border-red-500' : 'border-gray-300'
+                  }`}
                 placeholder="เช่น หลักสูตรปรับปรุง พ.ศ. 2565"
               />
               {formErrors.title && (
@@ -1317,9 +1315,8 @@ function CurriculumModal({
                 type="text"
                 value={formData.year}
                 onChange={(e) => setFormData({ ...formData, year: e.target.value })}
-                className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-                  formErrors.year ? 'border-red-500' : 'border-gray-300'
-                }`}
+                className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${formErrors.year ? 'border-red-500' : 'border-gray-300'
+                  }`}
                 placeholder="2565"
               />
               {formErrors.year && (
@@ -1336,9 +1333,8 @@ function CurriculumModal({
               type="text"
               value={formData.englishTitle}
               onChange={(e) => setFormData({ ...formData, englishTitle: e.target.value })}
-              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-                formErrors.englishTitle ? 'border-red-500' : 'border-gray-300'
-              }`}
+              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${formErrors.englishTitle ? 'border-red-500' : 'border-gray-300'
+                }`}
               placeholder="Bachelor of Science Program in..."
             />
             {formErrors.englishTitle && (
@@ -1354,9 +1350,8 @@ function CurriculumModal({
               rows={3}
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-                formErrors.description ? 'border-red-500' : 'border-gray-300'
-              }`}
+              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${formErrors.description ? 'border-red-500' : 'border-gray-300'
+                }`}
               placeholder="รายละเอียดของหลักสูตร..."
             />
             {formErrors.description && (
@@ -1405,9 +1400,8 @@ function CurriculumModal({
                 type="date"
                 value={formData.effectiveDate}
                 onChange={(e) => setFormData({ ...formData, effectiveDate: e.target.value })}
-                className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-                  formErrors.effectiveDate ? 'border-red-500' : 'border-gray-300'
-                }`}
+                className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${formErrors.effectiveDate ? 'border-red-500' : 'border-gray-300'
+                  }`}
               />
               {formErrors.effectiveDate && (
                 <p className="mt-1 text-sm text-red-500">{formErrors.effectiveDate}</p>
@@ -1502,7 +1496,7 @@ function DeleteModal({
           <div className="flex items-center space-x-4 mb-4">
             <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
               <svg className="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.082 16.5c-.77.833.192 2.5 1.732 2.5z"/>
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
               </svg>
             </div>
             <div>
@@ -1510,7 +1504,7 @@ function DeleteModal({
               <p className="text-gray-600 mt-1">{message}</p>
             </div>
           </div>
-          
+
           <div className="flex items-center justify-end space-x-3">
             <button
               onClick={onClose}
@@ -1564,7 +1558,7 @@ function DetailsModal({
             <div className="flex items-center space-x-4">
               <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
                 <svg className="w-6 h-6 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.669 0-3.218.51-4.5 1.385V4.804z"/>
+                  <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.669 0-3.218.51-4.5 1.385V4.804z" />
                 </svg>
               </div>
               <div>
@@ -1577,7 +1571,7 @@ function DetailsModal({
               className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
             >
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"/>
+                <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
               </svg>
             </button>
           </div>
@@ -1611,16 +1605,15 @@ function DetailsModal({
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-500 mb-1">สถานะ</label>
-                <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
-                  curriculum.status === 'active' ? 'bg-green-100 text-green-700' :
+                <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${curriculum.status === 'active' ? 'bg-green-100 text-green-700' :
                   curriculum.status === 'pending' ? 'bg-yellow-100 text-yellow-700' :
-                  curriculum.status === 'inactive' ? 'bg-red-100 text-red-700' :
-                  'bg-gray-100 text-gray-700'
-                }`}>
+                    curriculum.status === 'inactive' ? 'bg-red-100 text-red-700' :
+                      'bg-gray-100 text-gray-700'
+                  }`}>
                   {curriculum.status === 'active' ? 'ใช้งาน' :
-                   curriculum.status === 'pending' ? 'รออนุมัติ' :
-                   curriculum.status === 'inactive' ? 'ไม่ใช้งาน' :
-                   'แบบร่าง'}
+                    curriculum.status === 'pending' ? 'รออนุมัติ' :
+                      curriculum.status === 'inactive' ? 'ไม่ใช้งาน' :
+                        'แบบร่าง'}
                 </span>
               </div>
             </div>
