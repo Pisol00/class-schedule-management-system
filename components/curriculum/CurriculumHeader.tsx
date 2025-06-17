@@ -7,9 +7,18 @@ interface CurriculumHeaderProps {
   onCreateNew: () => void;
   activeFilter?: string;
   onFilterChange?: (filter: string) => void;
+  searchTerm: string;
+  setSearchTerm: (term: string) => void;
 }
 
-export default function CurriculumHeader({ stats, onCreateNew, activeFilter = 'ทุกสถานะ', onFilterChange }: CurriculumHeaderProps) {
+export default function CurriculumHeader({ 
+  stats, 
+  onCreateNew, 
+  activeFilter = 'ทุกสถานะ', 
+  onFilterChange,
+  searchTerm,
+  setSearchTerm 
+}: CurriculumHeaderProps) {
   const statItems = [
     {
       label: 'ทั้งหมด',
@@ -101,8 +110,8 @@ export default function CurriculumHeader({ stats, onCreateNew, activeFilter = '�
             </ol>
           </motion.nav>
 
-          {/* Main Header Content */}
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8">
+          {/* Header Content */}
+          <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between mb-8">
             {/* Title Section */}
             <motion.div 
               className="flex items-center space-x-4 mb-6 lg:mb-0"
@@ -151,48 +160,77 @@ export default function CurriculumHeader({ stats, onCreateNew, activeFilter = '�
               </div>
             </motion.div>
 
-            {/* Quick Actions */}
+            {/* Search Bar & Actions */}
             <motion.div 
-              className="flex flex-col sm:flex-row items-start sm:items-center space-y-3 sm:space-y-0 sm:space-x-3"
+              className="flex flex-col space-y-4 lg:w-1/2"
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.4, delay: 0.2 }}
             >
-              <motion.button
-                className="w-full sm:w-auto px-4 py-2 text-gray-600 hover:text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors flex items-center justify-center space-x-2"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={() => window.print()}
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
-                </svg>
-                <span>พิมพ์รายงาน</span>
-              </motion.button>
+              {/* Search Bar */}
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                  <motion.svg 
+                    className="w-5 h-5 text-gray-400" 
+                    fill="none" 
+                    stroke="currentColor" 
+                    viewBox="0 0 24 24"
+                    whileHover={{ scale: 1.1 }}
+                  >
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.35-4.35"></path>
+                  </motion.svg>
+                </div>
+                <input
+                  id="search-input"
+                  type="text"
+                  placeholder="ค้นหาหลักสูตร..."
+                  className="w-full pl-12 pr-12 py-3.5 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white shadow-sm text-gray-900 placeholder-gray-500 transition-all duration-200"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                {searchTerm && (
+                  <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
+                    <motion.button
+                      onClick={() => setSearchTerm('')}
+                      className="p-1 hover:bg-gray-100 rounded-full transition-colors"
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                    >
+                      <svg className="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"/>
+                      </svg>
+                    </motion.button>
+                  </div>
+                )}
+              </div>
 
-              <motion.button
-                className="w-full sm:w-auto px-4 py-2 text-gray-600 hover:text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors flex items-center justify-center space-x-2"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={() => alert('ส่งออกข้อมูล')}
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-                <span>ส่งออก</span>
-              </motion.button>
+              {/* Quick Actions */}
+              <div className="flex items-center space-x-3">
+                <motion.button
+                  className="px-4 py-2 text-gray-600 hover:text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors flex items-center space-x-2"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => alert('ส่งออกข้อมูล')}
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                  <span>ส่งออก</span>
+                </motion.button>
 
-              <motion.button
-                onClick={onCreateNew}
-                className="w-full sm:w-auto px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors flex items-center justify-center space-x-2 font-semibold shadow-lg hover:shadow-xl"
-                whileHover={{ scale: 1.02, y: -1 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
-                </svg>
-                <span>เพิ่มหลักสูตรใหม่</span>
-              </motion.button>
+                <motion.button
+                  onClick={onCreateNew}
+                  className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors flex items-center space-x-2 font-semibold shadow-lg hover:shadow-xl"
+                  whileHover={{ scale: 1.02, y: -1 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
+                  </svg>
+                  <span>เพิ่มหลักสูตรใหม่</span>
+                </motion.button>
+              </div>
             </motion.div>
           </div>
 

@@ -6,7 +6,6 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import CurriculumCard from './CurriculumCard';
 import CurriculumHeader from './CurriculumHeader.tsx';
-import CurriculumFilters from './CurriculumFilters';
 import CurriculumModal from './CurriculumModal';
 import CurriculumPagination from './CurriculumPagination';
 import FloatingActionHints from './FloatingActionHints';
@@ -46,7 +45,114 @@ const mockCurriculums: Curriculum[] = [
       totalSubjects: 70
     }
   },
-  // ... อีก 4 รายการตาม mock data เดิม
+  {
+    id: '2',
+    title: 'หลักสูตรวิศวกรรมซอฟต์แวร์ พ.ศ. 2564',
+    year: '2564',
+    description: 'หลักสูตรวิศวกรรมศาสตรบัณฑิต สาขาวิชาวิศวกรรมซอฟต์แวร์',
+    englishTitle: 'Bachelor of Engineering Program in Software Engineering',
+    totalCredits: 140,
+    practicalHours: 1080,
+    theoryHours: 1320,
+    status: 'pending',
+    department: 'คณะเทคโนโลยีสารสนเทศ',
+    degree: 'วิศวกรรมศาสตรบัณฑิต',
+    lastUpdated: '1 สัปดาห์ที่แล้ว',
+    createdAt: '2024-02-20',
+    updatedBy: 'อ.วิชัย สมใจ',
+    subjects: [],
+    version: '1.0',
+    approvalDate: '',
+    effectiveDate: '2024-08-01',
+    statistics: {
+      coreSubjects: 20,
+      majorSubjects: 28,
+      electiveSubjects: 10,
+      generalSubjects: 15,
+      totalSubjects: 73
+    }
+  },
+  {
+    id: '3',
+    title: 'หลักสูตรระบบสารสนเทศ พ.ศ. 2566',
+    year: '2566',
+    description: 'หลักสูตรวิทยาศาสตรบัณฑิต สาขาวิชาระบบสารสนเทศ',
+    englishTitle: 'Bachelor of Science Program in Information Systems',
+    totalCredits: 128,
+    practicalHours: 900,
+    theoryHours: 1140,
+    status: 'draft',
+    department: 'คณะเทคโนโลยีสารสนเทศ',
+    degree: 'วิทยาศาสตรบัณฑิต',
+    lastUpdated: '3 วันที่แล้ว',
+    createdAt: '2024-03-10',
+    updatedBy: 'อ.สุดา มานะ',
+    subjects: [],
+    version: '0.5',
+    approvalDate: '',
+    effectiveDate: '2025-08-01',
+    statistics: {
+      coreSubjects: 16,
+      majorSubjects: 22,
+      electiveSubjects: 14,
+      generalSubjects: 15,
+      totalSubjects: 67
+    }
+  },
+  {
+    id: '4',
+    title: 'หลักสูตรวิทยาการคอมพิวเตอร์ พ.ศ. 2563',
+    year: '2563',
+    description: 'หลักสูตรวิทยาศาสตรบัณฑิต สาขาวิชาวิทยาการคอมพิวเตอร์',
+    englishTitle: 'Bachelor of Science Program in Computer Science',
+    totalCredits: 135,
+    practicalHours: 1020,
+    theoryHours: 1260,
+    status: 'active',
+    department: 'คณะเทคโนโลยีสารสนเทศ',
+    degree: 'วิทยาศาสตรบัณฑิต',
+    lastUpdated: '1 เดือนที่แล้ว',
+    createdAt: '2023-12-05',
+    updatedBy: 'อ.ประยุทธ มั่นคง',
+    subjects: [],
+    version: '3.2',
+    approvalDate: '2023-05-15',
+    effectiveDate: '2023-08-01',
+    statistics: {
+      coreSubjects: 19,
+      majorSubjects: 26,
+      electiveSubjects: 13,
+      generalSubjects: 15,
+      totalSubjects: 73
+    }
+  },
+  {
+    id: '5',
+    title: 'หลักสูตรเทคโนโลยีมัลติมีเดีย พ.ศ. 2565',
+    year: '2565',
+    description: 'หลักสูตรวิทยาศาสตรบัณฑิต สาขาวิชาเทคโนโลยีมัลติมีเดีย',
+    englishTitle: 'Bachelor of Science Program in Multimedia Technology',
+    totalCredits: 130,
+    practicalHours: 1140,
+    theoryHours: 1080,
+    status: 'inactive',
+    department: 'คণะเทคโนโลยีสารสนเทศ',
+    degree: 'วิทยาศาสตรบัณฑิต',
+    lastUpdated: '2 เดือนที่แล้ว',
+    createdAt: '2024-01-25',
+    updatedBy: 'อ.สมชาย ใจดี',
+    subjects: [],
+    version: '1.8',
+    approvalDate: '2024-04-10',
+    effectiveDate: '2024-08-01',
+    statistics: {
+      coreSubjects: 17,
+      majorSubjects: 24,
+      electiveSubjects: 15,
+      generalSubjects: 15,
+      totalSubjects: 71
+    }
+  }
 ];
 
 const departments = [
@@ -67,11 +173,8 @@ export default function CurriculumManagement() {
   const [curriculums, setCurriculums] = useState<Curriculum[]>(mockCurriculums);
   const [filteredCurriculums, setFilteredCurriculums] = useState<Curriculum[]>(mockCurriculums);
   const [searchTerm, setSearchTerm] = useState('');
-  const [currentFilter, setCurrentFilter] = useState('ทุกสถานะ');
-  const [sortBy, setSortBy] = useState<'name' | 'date' | 'status' | 'credits'>('date');
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(6);
+  const [itemsPerPage] = useState(6);
   const [selectedCurriculums, setSelectedCurriculums] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [toasts, setToasts] = useState<Toast[]>([]);
@@ -117,57 +220,14 @@ export default function CurriculumManagement() {
         curriculum.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
         curriculum.englishTitle.toLowerCase().includes(searchTerm.toLowerCase()) ||
         curriculum.department.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        curriculum.degree.toLowerCase().includes(searchTerm.toLowerCase())
+        curriculum.degree.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        curriculum.year.includes(searchTerm)
       );
     }
 
-    // Filter by status
-    if (currentFilter !== 'ทุกสถานะ') {
-      const statusMap: { [key: string]: string } = {
-        'ใช้งาน': 'active',
-        'รออนุมัติ': 'pending',
-        'ไม่ใช้งาน': 'inactive',
-        'แบบร่าง': 'draft'
-      };
-      filtered = filtered.filter(curriculum => curriculum.status === statusMap[currentFilter]);
-    }
-
-    // Sort
-    filtered.sort((a, b) => {
-      let aValue: any, bValue: any;
-
-      switch (sortBy) {
-        case 'name':
-          aValue = a.title.toLowerCase();
-          bValue = b.title.toLowerCase();
-          break;
-        case 'date':
-          aValue = new Date(a.createdAt).getTime();
-          bValue = new Date(b.createdAt).getTime();
-          break;
-        case 'status':
-          aValue = a.status;
-          bValue = b.status;
-          break;
-        case 'credits':
-          aValue = a.totalCredits;
-          bValue = b.totalCredits;
-          break;
-        default:
-          aValue = a.title;
-          bValue = b.title;
-      }
-
-      if (sortOrder === 'asc') {
-        return aValue > bValue ? 1 : -1;
-      } else {
-        return aValue < bValue ? 1 : -1;
-      }
-    });
-
     setFilteredCurriculums(filtered);
     setCurrentPage(1);
-  }, [searchTerm, currentFilter, sortBy, sortOrder, curriculums]);
+  }, [searchTerm, curriculums]);
 
   // Pagination
   const totalPages = Math.ceil(filteredCurriculums.length / itemsPerPage);
@@ -183,6 +243,8 @@ export default function CurriculumManagement() {
     inactive: curriculums.filter(c => c.status === 'inactive').length,
     draft: curriculums.filter(c => c.status === 'draft').length
   };
+
+
 
   // CRUD Operations
   const handleCreate = async () => {
@@ -348,71 +410,76 @@ export default function CurriculumManagement() {
     <div className="min-h-screen bg-gray-50">
       <Header />
       
-      {/* Page Header */}
+      {/* Page Header with Search */}
       <CurriculumHeader 
         stats={stats} 
-        activeFilter={currentFilter}
-        onFilterChange={setCurrentFilter}
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
         onCreateNew={() => {
           resetForm();
           setShowCreateModal(true);
         }} 
       />
 
-      {/* Controls Section */}
-      <div className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          {/* Search and Controls */}
-          <CurriculumFilters
-            searchTerm={searchTerm}
-            setSearchTerm={setSearchTerm}
-            currentFilter={currentFilter}
-            setCurrentFilter={setCurrentFilter}
-            sortBy={sortBy}
-            setSortBy={setSortBy}
-            sortOrder={sortOrder}
-            setSortOrder={setSortOrder}
-            itemsPerPage={itemsPerPage}
-            setItemsPerPage={setItemsPerPage}
-            selectedCount={selectedCurriculums.length}
-            totalCount={filteredCurriculums.length}
-            onExport={handleExport}
-            onBulkDelete={handleBulkDelete}
-          />
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 min-h-[60vh]">
+        {/* Bulk Selection */}
+        {currentCurriculums.length > 0 && (
+          <div className="mb-6 flex items-center space-x-4">
+            <label className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                checked={selectedCurriculums.length === currentCurriculums.length}
+                onChange={() => {
+                  if (selectedCurriculums.length === currentCurriculums.length) {
+                    setSelectedCurriculums([]);
+                  } else {
+                    setSelectedCurriculums(currentCurriculums.map(c => c.id));
+                  }
+                }}
+                className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+              />
+              <span className="text-sm text-gray-600">
+                เลือกทั้งหมดในหน้านี้ ({selectedCurriculums.length}/{currentCurriculums.length})
+              </span>
+            </label>
 
-          {/* Bulk Selection */}
-          {currentCurriculums.length > 0 && (
-            <div className="mt-4 flex items-center space-x-4">
-              <label className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  checked={selectedCurriculums.length === currentCurriculums.length}
-                  onChange={() => {
-                    if (selectedCurriculums.length === currentCurriculums.length) {
-                      setSelectedCurriculums([]);
-                    } else {
-                      setSelectedCurriculums(currentCurriculums.map(c => c.id));
-                    }
-                  }}
-                  className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-                />
-                <span className="text-sm text-gray-600">
-                  เลือกทั้งหมดในหน้านี้ ({selectedCurriculums.length}/{currentCurriculums.length})
-                </span>
-              </label>
-
-              {selectedCurriculums.length > 0 && (
+            {selectedCurriculums.length > 0 && (
+              <>
                 <span className="text-sm text-blue-600">
                   เลือก {selectedCurriculums.length} รายการ
                 </span>
-              )}
-            </div>
-          )}
-        </div>
-      </div>
+                
+                <div className="flex items-center space-x-3">
+                  <motion.button
+                    onClick={handleExport}
+                    className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors flex items-center space-x-2"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    <span>ส่งออก</span>
+                  </motion.button>
 
-      {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 min-h-[60vh]">
+                  <motion.button
+                    onClick={handleBulkDelete}
+                    className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors flex items-center space-x-2"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                    <span>ลบ</span>
+                  </motion.button>
+                </div>
+              </>
+            )}
+          </div>
+        )}
+
         {/* Curriculum Grid */}
         {filteredCurriculums.length === 0 ? (
           <div className="text-center py-12">
@@ -422,11 +489,11 @@ export default function CurriculumManagement() {
               </svg>
             </div>
             <h3 className="text-lg font-semibold text-gray-900 mb-2">
-              {searchTerm || currentFilter !== 'ทุกสถานะ' ? 'ไม่พบหลักสูตรที่ตรงเงื่อนไข' : 'ยังไม่มีหลักสูตร'}
+              {searchTerm ? 'ไม่พบหลักสูตรที่ตรงเงื่อนไข' : 'ยังไม่มีหลักสูตร'}
             </h3>
             <p className="text-gray-500 mb-6">
-              {searchTerm || currentFilter !== 'ทุกสถานะ'
-                ? 'ลองเปลี่ยนคำค้นหาหรือตัวกรอง'
+              {searchTerm
+                ? `ไม่พบหลักสูตรที่ตรงกับ "${searchTerm}"`
                 : 'เริ่มต้นด้วยการเพิ่มหลักสูตรแรก'
               }
             </p>
