@@ -91,14 +91,6 @@ export default function CreateProjectModal({ isOpen, onClose, onSubmit }: Create
     if (!formData?.description?.trim()) {
       newErrors.description = 'กรุณาระบุคำอธิบาย';
     }
-    
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const validateStep2 = () => {
-    const newErrors: Partial<ProjectFormData> = {};
-    
     if (!formData?.startDate) {
       newErrors.startDate = 'กรุณาเลือกวันที่เริ่มต้น';
     }
@@ -121,10 +113,8 @@ export default function CreateProjectModal({ isOpen, onClose, onSubmit }: Create
         setFormData(prev => ({ ...prev, title }));
       }
       setCurrentStep(2);
-    } else if (currentStep === 2 && validateStep2()) {
+    } else if (currentStep === 2) {
       setCurrentStep(3);
-    } else if (currentStep === 3) {
-      setCurrentStep(4);
     }
   };
 
@@ -200,7 +190,7 @@ export default function CreateProjectModal({ isOpen, onClose, onSubmit }: Create
       <div className="space-y-6">
         {/* Progress Steps */}
         <div className="flex items-center justify-center space-x-2">
-          {[1, 2, 3, 4].map((step) => (
+          {[1, 2, 3].map((step) => (
             <div key={step} className="flex items-center">
               <motion.div 
                 className={`
@@ -216,7 +206,7 @@ export default function CreateProjectModal({ isOpen, onClose, onSubmit }: Create
               >
                 {step}
               </motion.div>
-              {step < 4 && (
+              {step < 3 && (
                 <div 
                   className={`
                     w-12 h-1 mx-2 rounded
@@ -245,10 +235,9 @@ export default function CreateProjectModal({ isOpen, onClose, onSubmit }: Create
           )}
           
           {currentStep === 2 && (
-            <Step2 
-              formData={formData} 
-              errors={errors}
-              onChange={handleInputChange} 
+            <Step2
+              formData={formData}
+              onImportDataChange={handleImportDataChange}
             />
           )}
           
@@ -258,13 +247,6 @@ export default function CreateProjectModal({ isOpen, onClose, onSubmit }: Create
               availableMembers={availableMembers}
               selectedMembers={selectedMembers}
               onToggleMember={toggleMember}
-            />
-          )}
-
-          {currentStep === 4 && (
-            <Step4
-              formData={formData}
-              onImportDataChange={handleImportDataChange}
             />
           )}
         </motion.div>
@@ -292,7 +274,7 @@ export default function CreateProjectModal({ isOpen, onClose, onSubmit }: Create
               ยกเลิก
             </button>
             
-            {currentStep < 4 ? (
+            {currentStep < 3 ? (
               <motion.button
                 onClick={handleNext}
                 className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
@@ -331,7 +313,7 @@ export default function CreateProjectModal({ isOpen, onClose, onSubmit }: Create
   );
 }
 
-// Step 1: Basic Information
+// Step 1: Basic Information + Schedule
 function Step1({ formData = {}, errors = {}, onChange }: { 
   formData: ProjectFormData; 
   errors?: Partial<ProjectFormData>;
@@ -339,6 +321,7 @@ function Step1({ formData = {}, errors = {}, onChange }: {
 }) {
   return (
     <div className="space-y-6">
+      {/* Basic Information */}
       <div>
         <h3 className="text-lg font-semibold mb-4">ข้อมูลพื้นฐาน</h3>
         
@@ -382,7 +365,7 @@ function Step1({ formData = {}, errors = {}, onChange }: {
           </div>
         </div>
         
-        <div>
+        <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700 mb-2">
             ชื่อโครงการ (ไม่ระบุจะใช้ชื่ออัตโนมัติ)
           </label>
@@ -398,7 +381,7 @@ function Step1({ formData = {}, errors = {}, onChange }: {
           </p>
         </div>
         
-        <div className="mt-4">
+        <div className="mb-6">
           <label className="block text-sm font-medium text-gray-700 mb-2">
             คำอธิบาย <span className="text-red-500">*</span>
           </label>
@@ -416,19 +399,9 @@ function Step1({ formData = {}, errors = {}, onChange }: {
           )}
         </div>
       </div>
-    </div>
-  );
-}
 
-// Step 2: Schedule
-function Step2({ formData = {}, errors = {}, onChange }: { 
-  formData: ProjectFormData; 
-  errors?: Partial<ProjectFormData>;
-  onChange: (field: keyof ProjectFormData, value: string) => void 
-}) {
-  return (
-    <div className="space-y-6">
-      <div>
+      {/* Schedule Section */}
+      <div className="border-t pt-6">
         <h3 className="text-lg font-semibold mb-4">ระยะเวลาโครงการ</h3>
         
         <div className="grid grid-cols-2 gap-4">
@@ -468,9 +441,9 @@ function Step2({ formData = {}, errors = {}, onChange }: {
         </div>
         
         {/* Calendar Preview */}
-        <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-          <h4 className="text-sm font-medium text-gray-700 mb-2">ภาพรวมระยะเวลา</h4>
-          {formData?.startDate && formData?.endDate && (
+        {formData?.startDate && formData?.endDate && (
+          <div className="mt-6 p-4 bg-gray-50 rounded-lg">
+            <h4 className="text-sm font-medium text-gray-700 mb-2">ภาพรวมระยะเวลา</h4>
             <div className="flex items-center space-x-4 text-sm text-gray-600">
               <div className="flex items-center space-x-2">
                 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
@@ -506,99 +479,15 @@ function Step2({ formData = {}, errors = {}, onChange }: {
                 {Math.ceil((new Date(formData.endDate).getTime() - new Date(formData.startDate).getTime()) / (1000 * 60 * 60 * 24))} วัน
               </Badge>
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );
 }
 
-// Step 3: Team Members
-function Step3({ 
-  formData = {}, 
-  availableMembers = [], 
-  selectedMembers = [], 
-  onToggleMember 
-}: { 
-  formData: ProjectFormData;
-  availableMembers: any[];
-  selectedMembers: string[];
-  onToggleMember: (id: string) => void;
-}) {
-  return (
-    <div className="space-y-6">
-      <div>
-        <h3 className="text-lg font-semibold mb-4">เลือกสมาชิกโครงการ</h3>
-        <p className="text-sm text-gray-600 mb-4">
-          เลือกอาจารย์และเจ้าหน้าที่ที่จะร่วมในโครงการนี้ ({selectedMembers?.length || 0} คน)
-        </p>
-        
-        <div className="space-y-2 max-h-64 overflow-y-auto">
-          {availableMembers?.map(member => (
-            <motion.div
-              key={member.id}
-              className={`
-                p-3 rounded-lg border cursor-pointer transition-all
-                ${selectedMembers?.includes(member.id) 
-                  ? 'border-blue-500 bg-blue-50' 
-                  : 'border-gray-200 hover:bg-gray-50'
-                }
-              `}
-              onClick={() => onToggleMember(member.id)}
-              whileHover={{ scale: 1.01 }}
-              whileTap={{ scale: 0.99 }}
-            >
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                  <div className={`
-                    w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium
-                    ${selectedMembers?.includes(member.id) 
-                      ? 'bg-blue-500 text-white' 
-                      : 'bg-gray-200 text-gray-600'
-                    }
-                  `}>
-                    {member.name.split(' ').map(n => n.charAt(0)).join('').substring(0, 2)}
-                  </div>
-                  <div>
-                    <p className="font-medium text-gray-900">{member.name}</p>
-                    <p className="text-sm text-gray-500">{member.role} - {member.department}</p>
-                  </div>
-                </div>
-                
-                <div className={`
-                  w-5 h-5 rounded border-2 flex items-center justify-center
-                  ${selectedMembers?.includes(member.id) 
-                    ? 'bg-blue-500 border-blue-500' 
-                    : 'border-gray-300'
-                  }
-                `}>
-                  {selectedMembers?.includes(member.id) && (
-                    <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
-                    </svg>
-                  )}
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-      
-      {/* Summary */}
-      <div className="p-4 bg-blue-50 rounded-lg">
-        <h4 className="text-sm font-semibold text-blue-900 mb-2">สรุปข้อมูลโครงการ</h4>
-        <div className="space-y-1 text-sm text-blue-700">
-          <p><span className="font-medium">ชื่อ:</span> {formData?.title || `ภาคการศึกษา ${formData?.semester || '1'}/${formData?.academicYear || new Date().getFullYear()}`}</p>
-          <p><span className="font-medium">ระยะเวลา:</span> {formData?.startDate || '-'} ถึง {formData?.endDate || '-'}</p>
-          <p><span className="font-medium">สมาชิก:</span> {selectedMembers?.length || 0} คน</p>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// Step 4: Import Data
-function Step4({ 
+// Step 2: Import Data
+function Step2({ 
   formData = {}, 
   onImportDataChange 
 }: { 
@@ -716,6 +605,90 @@ function Step4({
               ข้อมูลจะถูกคัดลอกไปยังโครงการใหม่ การแก้ไขจะไม่กระทบกับข้อมูลต้นฉบับ
             </p>
           </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Step 3: Team Members
+function Step3({ 
+  formData = {}, 
+  availableMembers = [], 
+  selectedMembers = [], 
+  onToggleMember 
+}: { 
+  formData: ProjectFormData;
+  availableMembers: any[];
+  selectedMembers: string[];
+  onToggleMember: (id: string) => void;
+}) {
+  return (
+    <div className="space-y-6">
+      <div>
+        <h3 className="text-lg font-semibold mb-4">เลือกสมาชิกโครงการ</h3>
+        <p className="text-sm text-gray-600 mb-4">
+          เลือกอาจารย์และเจ้าหน้าที่ที่จะร่วมในโครงการนี้ ({selectedMembers?.length || 0} คน)
+        </p>
+        
+        <div className="space-y-2 max-h-64 overflow-y-auto">
+          {availableMembers?.map(member => (
+            <motion.div
+              key={member.id}
+              className={`
+                p-3 rounded-lg border cursor-pointer transition-all
+                ${selectedMembers?.includes(member.id) 
+                  ? 'border-blue-500 bg-blue-50' 
+                  : 'border-gray-200 hover:bg-gray-50'
+                }
+              `}
+              onClick={() => onToggleMember(member.id)}
+              whileHover={{ scale: 1.01 }}
+              whileTap={{ scale: 0.99 }}
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-3">
+                  <div className={`
+                    w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium
+                    ${selectedMembers?.includes(member.id) 
+                      ? 'bg-blue-500 text-white' 
+                      : 'bg-gray-200 text-gray-600'
+                    }
+                  `}>
+                    {member.name.split(' ').map(n => n.charAt(0)).join('').substring(0, 2)}
+                  </div>
+                  <div>
+                    <p className="font-medium text-gray-900">{member.name}</p>
+                    <p className="text-sm text-gray-500">{member.role} - {member.department}</p>
+                  </div>
+                </div>
+                
+                <div className={`
+                  w-5 h-5 rounded border-2 flex items-center justify-center
+                  ${selectedMembers?.includes(member.id) 
+                    ? 'bg-blue-500 border-blue-500' 
+                    : 'border-gray-300'
+                  }
+                `}>
+                  {selectedMembers?.includes(member.id) && (
+                    <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
+                    </svg>
+                  )}
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+      
+      {/* Summary */}
+      <div className="p-4 bg-blue-50 rounded-lg">
+        <h4 className="text-sm font-semibold text-blue-900 mb-2">สรุปข้อมูลโครงการ</h4>
+        <div className="space-y-1 text-sm text-blue-700">
+          <p><span className="font-medium">ชื่อ:</span> {formData?.title || `ภาคการศึกษา ${formData?.semester || '1'}/${formData?.academicYear || new Date().getFullYear()}`}</p>
+          <p><span className="font-medium">ระยะเวลา:</span> {formData?.startDate || '-'} ถึง {formData?.endDate || '-'}</p>
+          <p><span className="font-medium">สมาชิก:</span> {selectedMembers?.length || 0} คน</p>
         </div>
       </div>
     </div>

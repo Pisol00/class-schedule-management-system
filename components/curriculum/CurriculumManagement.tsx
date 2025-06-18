@@ -425,7 +425,43 @@ export default function CurriculumManagement() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 min-h-[60vh]">
         {/* Bulk Selection */}
         {currentCurriculums.length > 0 && (
-          <div className="mb-6 flex items-center space-x-4">
+          <div className="mb-6 flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              {selectedCurriculums.length > 0 && (
+                <>
+                  <span className="text-sm text-blue-600">
+                    เลือก {selectedCurriculums.length} รายการ
+                  </span>
+                  
+                  <div className="flex items-center space-x-3">
+                    <motion.button
+                      onClick={handleExport}
+                      className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors flex items-center space-x-2"
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                      </svg>
+                      <span>ส่งออก</span>
+                    </motion.button>
+
+                    <motion.button
+                      onClick={handleBulkDelete}
+                      className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors flex items-center space-x-2"
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                      </svg>
+                      <span>ลบ</span>
+                    </motion.button>
+                  </div>
+                </>
+              )}
+            </div>
+
             <label className="flex items-center space-x-2">
               <input
                 type="checkbox"
@@ -443,40 +479,6 @@ export default function CurriculumManagement() {
                 เลือกทั้งหมดในหน้านี้ ({selectedCurriculums.length}/{currentCurriculums.length})
               </span>
             </label>
-
-            {selectedCurriculums.length > 0 && (
-              <>
-                <span className="text-sm text-blue-600">
-                  เลือก {selectedCurriculums.length} รายการ
-                </span>
-                
-                <div className="flex items-center space-x-3">
-                  <motion.button
-                    onClick={handleExport}
-                    className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors flex items-center space-x-2"
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                    </svg>
-                    <span>ส่งออก</span>
-                  </motion.button>
-
-                  <motion.button
-                    onClick={handleBulkDelete}
-                    className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors flex items-center space-x-2"
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                    </svg>
-                    <span>ลบ</span>
-                  </motion.button>
-                </div>
-              </>
-            )}
           </div>
         )}
 

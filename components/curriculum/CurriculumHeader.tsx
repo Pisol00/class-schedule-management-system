@@ -246,72 +246,9 @@ export default function CurriculumHeader({
             </motion.div>
           </div>
 
-          {/* Statistics Cards */}
-          <motion.div 
-            className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-          >
-            {statItems.map((item, index) => (
-              <ResponsiveStatsCard
-                key={item.label}
-                label={item.label}
-                value={item.value}
-                total={stats.total}
-                icon={item.icon}
-                color={item.color}
-                bgColor={item.bgColor}
-                borderColor={item.borderColor}
-                onClick={() => onFilterChange?.(item.filterKey)}
-                index={index}
-                isActive={activeFilter === item.filterKey}
-              />
-            ))}
-          </motion.div>
 
-          {/* Additional Info Bar */}
-          <motion.div 
-            className="mt-6 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-200"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.8 }}
-          >
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-              <div className="flex items-center space-x-3 mb-2 sm:mb-0">
-                <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-                  <svg className="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
-                  </svg>
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-blue-900">
-                    ระบบประเมินคุณภาพหลักสูตร
-                  </p>
-                  <p className="text-xs text-blue-700">
-                    หลักสูตรที่ผ่านการประเมิน: {stats.active} จาก {stats.total} หลักสูตร
-                  </p>
-                </div>
-              </div>
-              
-              <div className="flex items-center space-x-4">
-                <div className="flex items-center space-x-2">
-                  <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-                  <span className="text-xs text-blue-700">ผ่านเกณฑ์</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <div className="w-2 h-2 bg-yellow-400 rounded-full"></div>
-                  <span className="text-xs text-blue-700">ปรับปรุง</span>
-                </div>
-                <motion.button 
-                  className="text-xs text-blue-600 hover:text-blue-800 font-medium"
-                  whileHover={{ scale: 1.05 }}
-                >
-                  ดูรายงานเต็ม →
-                </motion.button>
-              </div>
-            </div>
-          </motion.div>
+
+
         </div>
       </div>
     </div>
