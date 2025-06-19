@@ -329,6 +329,14 @@ export default function CreateProjectModal({ isOpen, onClose, onSubmit }: Create
     if (!formData?.description?.trim()) {
       newErrors.description = 'กรุณาระบุคำอธิบาย';
     }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const validateStep2 = () => {
+    const newErrors: Partial<ProjectFormData> = {};
+    
     if (!formData?.startDate) {
       newErrors.startDate = 'กรุณาเลือกวันที่เริ่มต้น';
     }
@@ -351,8 +359,10 @@ export default function CreateProjectModal({ isOpen, onClose, onSubmit }: Create
         setFormData(prev => ({ ...prev, title }));
       }
       setCurrentStep(2);
-    } else if (currentStep === 2) {
+    } else if (currentStep === 2 && validateStep2()) {
       setCurrentStep(3);
+    } else if (currentStep === 3) {
+      setCurrentStep(4);
     }
   };
 
@@ -428,7 +438,7 @@ export default function CreateProjectModal({ isOpen, onClose, onSubmit }: Create
       <div className="space-y-6">
         {/* Progress Steps */}
         <div className="flex items-center justify-center space-x-2">
-          {[1, 2, 3].map((step) => (
+          {[1, 2, 3, 4].map((step) => (
             <div key={step} className="flex items-center">
               <motion.div 
                 className={`
@@ -444,7 +454,7 @@ export default function CreateProjectModal({ isOpen, onClose, onSubmit }: Create
               >
                 {step}
               </motion.div>
-              {step < 3 && (
+              {step < 4 && (
                 <div 
                   className={`
                     w-12 h-1 mx-2 rounded
@@ -469,6 +479,14 @@ export default function CreateProjectModal({ isOpen, onClose, onSubmit }: Create
               formData={formData} 
               errors={errors}
               onChange={handleInputChange}
+            />
+          )}
+          
+          {currentStep === 2 && (
+            <Step2
+              formData={formData}
+              errors={errors}
+              onChange={handleInputChange}
               onDateSelect={handleDateSelect}
               showStartCalendar={showStartCalendar}
               setShowStartCalendar={setShowStartCalendar}
@@ -477,15 +495,15 @@ export default function CreateProjectModal({ isOpen, onClose, onSubmit }: Create
             />
           )}
           
-          {currentStep === 2 && (
-            <Step2
+          {currentStep === 3 && (
+            <Step3
               formData={formData}
               onImportDataChange={handleImportDataChange}
             />
           )}
           
-          {currentStep === 3 && (
-            <Step3 
+          {currentStep === 4 && (
+            <Step4 
               formData={formData}
               availableMembers={availableMembers}
               selectedMembers={selectedMembers}
@@ -517,7 +535,7 @@ export default function CreateProjectModal({ isOpen, onClose, onSubmit }: Create
               ยกเลิก
             </button>
             
-            {currentStep < 3 ? (
+            {currentStep < 4 ? (
               <motion.button
                 onClick={handleNext}
                 className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
@@ -556,8 +574,113 @@ export default function CreateProjectModal({ isOpen, onClose, onSubmit }: Create
   );
 }
 
-// Step 1: Basic Information + Enhanced Schedule with Calendar
+// Step 1: Basic Information Only
 function Step1({ 
+  formData = {}, 
+  errors = {}, 
+  onChange
+}: { 
+  formData: ProjectFormData; 
+  errors?: Partial<ProjectFormData>;
+  onChange: (field: keyof ProjectFormData, value: string) => void;
+}) {
+  return (
+    <div className="max-w-xl mx-auto space-y-6">
+      {/* Basic Information */}
+      <div>
+        <h3 className="text-lg font-semibold mb-4">ข้อมูลพื้นฐาน</h3>
+        
+        <div className="grid grid-cols-2 gap-4 mb-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              ภาคการศึกษา <span className="text-red-500">*</span>
+            </label>
+            <select
+              value={formData?.semester || '1'}
+              onChange={(e) => onChange('semester', e.target.value)}
+              className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
+                errors?.semester ? 'border-red-500' : 'border-gray-300'
+              }`}
+            >
+              <option value="1">ภาคการศึกษาที่ 1</option>
+              <option value="2">ภาคการศึกษาที่ 2</option>
+              <option value="3">ภาคฤดูร้อน</option>
+            </select>
+            {errors?.semester && (
+              <p className="mt-1 text-sm text-red-500">{errors.semester}</p>
+            )}
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              ปีการศึกษา <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              value={formData?.academicYear || new Date().getFullYear().toString()}
+              onChange={(e) => onChange('academicYear', e.target.value)}
+              placeholder="2567"
+              className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
+                errors?.academicYear ? 'border-red-500' : 'border-gray-300'
+              }`}
+            />
+            {errors?.academicYear && (
+              <p className="mt-1 text-sm text-red-500">{errors.academicYear}</p>
+            )}
+          </div>
+        </div>
+        
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            ชื่อโครงการ (ไม่ระบุจะใช้ชื่ออัตโนมัติ)
+          </label>
+          <input
+            type="text"
+            value={formData?.title || ''}
+            onChange={(e) => onChange('title', e.target.value)}
+            placeholder="เช่น ตารางสอนภาค 1/2567"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          />
+          <p className="mt-1 text-sm text-gray-500">
+            หากไม่ระบุ ระบบจะสร้างชื่อเป็น "ภาคการศึกษา {formData?.semester || '1'}/{formData?.academicYear || new Date().getFullYear()}"
+          </p>
+        </div>
+        
+        <div className="mb-6">
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            คำอธิบาย <span className="text-red-500">*</span>
+          </label>
+          <textarea
+            value={formData?.description || ''}
+            onChange={(e) => onChange('description', e.target.value)}
+            rows={3}
+            placeholder="อธิบายรายละเอียดของโครงการ..."
+            className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
+              errors.description ? 'border-red-500' : 'border-gray-300'
+            }`}
+          />
+          {errors.description && (
+            <p className="mt-1 text-sm text-red-500">{errors.description}</p>
+          )}
+        </div>
+      </div>
+
+      {/* Preview */}
+      <div className="bg-gray-50 rounded-lg p-4">
+        <h4 className="text-sm font-medium text-gray-700 mb-2">ตัวอย่างชื่อโครงการ</h4>
+        <p className="text-lg font-semibold text-blue-900">
+          {formData?.title || `ภาคการศึกษา ${formData?.semester || '1'}/${formData?.academicYear || new Date().getFullYear()}`}
+        </p>
+        <p className="text-sm text-gray-600 mt-1">
+          {formData?.description || 'คำอธิบายโครงการ...'}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+// Step 2: Schedule/ระยะเวลาโครงการ
+function Step2({ 
   formData = {}, 
   errors = {}, 
   onChange,
@@ -587,87 +710,19 @@ function Step1({
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
       {/* Left Column - Form */}
       <div className="space-y-6">
-        {/* Basic Information */}
-        <div>
-          <h3 className="text-lg font-semibold mb-4">ข้อมูลพื้นฐาน</h3>
-          
-          <div className="grid grid-cols-2 gap-4 mb-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                ภาคการศึกษา <span className="text-red-500">*</span>
-              </label>
-              <select
-                value={formData?.semester || '1'}
-                onChange={(e) => onChange('semester', e.target.value)}
-                className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-                  errors?.semester ? 'border-red-500' : 'border-gray-300'
-                }`}
-              >
-                <option value="1">ภาคการศึกษาที่ 1</option>
-                <option value="2">ภาคการศึกษาที่ 2</option>
-                <option value="3">ภาคฤดูร้อน</option>
-              </select>
-              {errors?.semester && (
-                <p className="mt-1 text-sm text-red-500">{errors.semester}</p>
-              )}
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                ปีการศึกษา <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="text"
-                value={formData?.academicYear || new Date().getFullYear().toString()}
-                onChange={(e) => onChange('academicYear', e.target.value)}
-                placeholder="2567"
-                className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-                  errors?.academicYear ? 'border-red-500' : 'border-gray-300'
-                }`}
-              />
-              {errors?.academicYear && (
-                <p className="mt-1 text-sm text-red-500">{errors.academicYear}</p>
-              )}
-            </div>
-          </div>
-          
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              ชื่อโครงการ (ไม่ระบุจะใช้ชื่ออัตโนมัติ)
-            </label>
-            <input
-              type="text"
-              value={formData?.title || ''}
-              onChange={(e) => onChange('title', e.target.value)}
-              placeholder="เช่น ตารางสอนภาค 1/2567"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            />
-            <p className="mt-1 text-sm text-gray-500">
-              หากไม่ระบุ ระบบจะสร้างชื่อเป็น "ภาคการศึกษา {formData?.semester || '1'}/{formData?.academicYear || new Date().getFullYear()}"
-            </p>
-          </div>
-          
-          <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              คำอธิบาย <span className="text-red-500">*</span>
-            </label>
-            <textarea
-              value={formData?.description || ''}
-              onChange={(e) => onChange('description', e.target.value)}
-              rows={3}
-              placeholder="อธิบายรายละเอียดของโครงการ..."
-              className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-                errors.description ? 'border-red-500' : 'border-gray-300'
-              }`}
-            />
-            {errors.description && (
-              <p className="mt-1 text-sm text-red-500">{errors.description}</p>
-            )}
-          </div>
+        {/* Project Summary */}
+        <div className="bg-blue-50 rounded-lg p-4">
+          <h4 className="text-sm font-medium text-gray-700 mb-2">โครงการที่กำลังสร้าง</h4>
+          <p className="text-lg font-semibold text-blue-900">
+            {formData?.title || `ภาคการศึกษา ${formData?.semester || '1'}/${formData?.academicYear || new Date().getFullYear()}`}
+          </p>
+          <p className="text-sm text-gray-600 mt-1">
+            {formData?.description || 'คำอธิบายโครงการ...'}
+          </p>
         </div>
 
         {/* Date Selection with Buttons */}
-        <div className="border-t pt-6">
+        <div>
           <h3 className="text-lg font-semibold mb-4">ระยะเวลาโครงการ</h3>
           
           <div className="grid grid-cols-2 gap-4">
@@ -777,6 +832,21 @@ function Step1({
               </div>
             </motion.div>
           )}
+
+          {/* Schedule Tips */}
+          <div className="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+            <h4 className="text-sm font-semibold text-yellow-800 mb-2 flex items-center">
+              <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd"/>
+              </svg>
+              คำแนะนำในการเลือกระยะเวลา
+            </h4>
+            <ul className="text-sm text-yellow-700 space-y-1">
+              <li>• ภาคการศึกษาปกติ: ประมาณ 16-18 สัปดาห์</li>
+              <li>• ภาคฤดูร้อน: ประมาณ 8-10 สัปดาห์</li>
+              <li>• ควรเพิ่มเวลาสำหรับเตรียมการก่อนเปิดเรียน 2-3 สัปดาห์</li>
+            </ul>
+          </div>
         </div>
       </div>
 
@@ -831,8 +901,8 @@ function Step1({
   );
 }
 
-// Step 2: Import Data (unchanged)
-function Step2({ 
+// Step 3: Import Data (เดิมเป็น Step 2)
+function Step3({ 
   formData = {}, 
   onImportDataChange 
 }: { 
@@ -956,8 +1026,8 @@ function Step2({
   );
 }
 
-// Step 3: Team Members (unchanged)
-function Step3({ 
+// Step 4: Team Members (เดิมเป็น Step 3)
+function Step4({ 
   formData = {}, 
   availableMembers = [], 
   selectedMembers = [], 
