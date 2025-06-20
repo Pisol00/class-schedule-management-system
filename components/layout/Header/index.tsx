@@ -9,14 +9,13 @@ import NotificationBell from './NotificationBell';
 export default function Header() {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
-  const [showDataDropdown, setShowDataDropdown] = useState(false);
+  // เอา showDataDropdown ออก
 
   // Handle keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         setShowProfileDropdown(false);
-        setShowDataDropdown(false);
         setShowMobileMenu(false);
       }
     };
@@ -41,7 +40,7 @@ export default function Header() {
           </div>
           
           {/* Navigation Menu - Desktop */}
-          <Navigation showDataDropdown={showDataDropdown} setShowDataDropdown={setShowDataDropdown} />
+          <Navigation />
           
           {/* User Profile & Actions */}
           <div className="relative flex items-center justify-end space-x-3">
