@@ -3,8 +3,8 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useParams } from 'next/navigation';
-import Header from '@/components/layout/Header';
 import ProjectSidebar from '@/components/project/ProjectSidebar';
+import RoomScheduleViewer from '@/components/project/InlineTimetable';
 import { Project } from '@/components/projects/ProjectCard';
 
 // Mock project data (ในความเป็นจริงจะดึงจาก API)
@@ -51,6 +51,7 @@ export default function ProjectLayout({
   const projectId = params.id as string;
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [currentProject, setCurrentProject] = useState<Project | null>(null);
+  const [showRoomViewer, setShowRoomViewer] = useState(false);
 
   useEffect(() => {
     // ดึงข้อมูล project จาก ID
@@ -76,16 +77,17 @@ export default function ProjectLayout({
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <Header />
-      
-      <div className="flex">
-        {/* Project Sidebar */}
-        <ProjectSidebar 
-          project={currentProject}
-          collapsed={sidebarCollapsed}
-          onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
-        />
+      <div className="flex h-screen">
+        {/* Project Sidebar - เต็มความสูงหน้าจอ */}
+        <div className={`fixed left-0 top-0 bottom-0 bg-white border-r border-gray-200 z-30 transition-all duration-300 ${
+          sidebarCollapsed ? 'w-16' : 'w-80'
+        }`}>
+          <ProjectSidebar 
+            project={currentProject}
+            collapsed={sidebarCollapsed}
+            onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
+          />
+        </div>
         
         {/* Main Content */}
         <motion.main 

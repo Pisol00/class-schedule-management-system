@@ -9,6 +9,7 @@ import ProjectStats from '@/components/project/ProjectStats';
 import RecentActivity from '@/components/project/RecentActivity';
 import ProgressTracking from '@/components/project/ProgressTracking';
 import TeamOverview from '@/components/project/TeamOverview';
+import InlineTimetable from '@/components/project/InlineTimetable';
 import { Project } from '@/components/projects/ProjectCard';
 
 // Mock data
@@ -81,7 +82,7 @@ export default function ProjectDashboard() {
   const [isLoading, setIsLoading] = useState(false);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 relative">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -113,11 +114,20 @@ export default function ProjectDashboard() {
         <QuickActions projectId={projectId} />
       </motion.div>
 
-      {/* Stats Grid */}
+      {/* Timetable - แสดงเป็นหน้าแรก */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
+      >
+        <InlineTimetable />
+      </motion.div>
+
+      {/* Stats Grid */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.3 }}
       >
         <ProjectStats stats={mockStats} />
       </motion.div>
@@ -130,7 +140,7 @@ export default function ProjectDashboard() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
           >
             <ProgressTracking project={project} />
           </motion.div>
@@ -139,7 +149,7 @@ export default function ProjectDashboard() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
+            transition={{ duration: 0.5, delay: 0.5 }}
           >
             <ProjectOverview project={project} />
           </motion.div>
@@ -151,7 +161,7 @@ export default function ProjectDashboard() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.5 }}
+            transition={{ duration: 0.5, delay: 0.6 }}
           >
             <TeamOverview members={project.members} />
           </motion.div>
@@ -160,7 +170,7 @@ export default function ProjectDashboard() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.6 }}
+            transition={{ duration: 0.5, delay: 0.7 }}
           >
             <RecentActivity activities={mockActivities} />
           </motion.div>
