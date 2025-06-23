@@ -23,7 +23,7 @@ export interface Project {
 
 interface ProjectCardProps {
   project: Project;
-  onClick: (project: Project) => void;
+  onClick?: (project: Project) => void;
   index?: number;
 }
 
@@ -104,28 +104,6 @@ export default function ProjectCard({ project, onClick, index = 0 }: ProjectCard
 
         {/* Content Overlay */}
         <div className="absolute inset-0 p-4 flex flex-col justify-center">
-          {/* Progress Section - Center */}
-          {project.schedules > 0 && (
-            <div className="text-center mb-2">
-              <div className="flex items-center justify-center space-x-3 mb-2">
-                <span className="text-white text-lg font-semibold">
-                  {project.schedules}/{project.subjects}
-                </span>
-                <span className="text-white text-xs opacity-75">
-                  ตารางสอน
-                </span>
-              </div>
-              <div className="w-24 bg-white bg-opacity-20 rounded-full h-1.5 overflow-hidden mx-auto">
-                <motion.div 
-                  className="h-full bg-white rounded-full"
-                  initial={{ width: 0 }}
-                  animate={{ width: `${(project.schedules / project.subjects) * 100}%` }}
-                  transition={{ delay: 1.2 + (index * 0.1), duration: 0.8 }}
-                />
-              </div>
-            </div>
-          )}
-          
           {/* Last Updated - Bottom Right */}
           <div className="absolute bottom-3 right-3">
             <div className="text-white text-xs opacity-75">
