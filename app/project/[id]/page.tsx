@@ -105,6 +105,16 @@ export default function ProjectDashboard() {
         </div>
       </motion.div>
 
+      {/* Timetable - แสดงเป็นอันดับแรก */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.1 }}
+      >
+        <InlineTimetable />
+      </motion.div>
+
+      
       {/* Quick Actions */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -114,14 +124,7 @@ export default function ProjectDashboard() {
         <QuickActions projectId={projectId} />
       </motion.div>
 
-      {/* Timetable - แสดงเป็นหน้าแรก */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.2 }}
-      >
-        <InlineTimetable />
-      </motion.div>
+
 
       {/* Stats Grid */}
       <motion.div

@@ -27,6 +27,164 @@ interface ProjectCardProps {
   index?: number;
 }
 
+// Progress Bar Component
+interface ProgressBarProps {
+  schedules: number;
+  subjects: number;
+  status: Project['status'];
+  index: number;
+}
+
+function ProgressBar({ schedules, subjects, status, index }: ProgressBarProps) {
+  // คำนวณ percentage จาก schedules/subjects
+  const progressValue = subjects > 0 ? Math.round((schedules / subjects) * 100) : 0;
+  
+  const getProgressColor = (status: Project['status']) => {
+    switch (status) {
+      case 'กำลังดำเนินการ':
+        return {
+          bg: 'bg-green-100',
+          fill: 'bg-gradient-to-r from-green-400 to-green-500',
+          text: 'text-green-700'
+        };
+      case 'แบบร่าง':
+        return {
+          bg: 'bg-orange-100',
+          fill: 'bg-gradient-to-r from-orange-400 to-orange-500',
+          text: 'text-orange-700'
+        };
+      case 'เสร็จสิ้น':
+        return {
+          bg: 'bg-blue-100',
+          fill: 'bg-gradient-to-r from-blue-400 to-blue-500',
+          text: 'text-blue-700'
+        };
+      case 'เก็บถาวร':
+        return {
+          bg: 'bg-slate-100',
+          fill: 'bg-gradient-to-r from-slate-400 to-slate-500',
+          text: 'text-slate-700'
+        };
+      default:
+        return {
+          bg: 'bg-slate-100',
+          fill: 'bg-gradient-to-r from-slate-400 to-slate-500',
+          text: 'text-slate-700'
+        };
+    }
+  };
+
+  const colors = getProgressColor(status);
+
+  return (
+    <motion.div 
+      className="space-y-2"
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.3 + (index * 0.1) }}
+    >
+      <div className="flex items-center justify-between">
+        <span className="text-xs font-medium text-slate-500 uppercase tracking-wider">
+          จัดตารางสอนแล้ว
+        </span>
+        <motion.div 
+          className="flex items-center gap-1"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.6 + (index * 0.1) }}
+        >
+          <span className={`text-sm font-bold ${colors.text}`}>
+            {schedules}
+          </span>
+          <span className="text-slate-400 text-sm">/</span>
+          <span className="text-slate-600 text-sm font-medium">
+            {subjects}
+          </span>
+          <span className={`text-xs ${colors.text} ml-1`}>
+            ({progressValue}%)
+          </span>
+        </motion.div>
+      </div>
+      
+      <div className={`relative h-2 ${colors.bg} rounded-full overflow-hidden`}>
+        {/* Background shimmer effect */}
+        <motion.div 
+          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
+          animate={{ x: ['-100%', '100%'] }}
+          transition={{ 
+            duration: 2,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 1 + (index * 0.2)
+          }}
+        />
+        
+        {/* Progress fill */}
+        <motion.div 
+          className={`h-full ${colors.fill} rounded-full relative overflow-hidden`}
+          initial={{ width: "0%" }}
+          animate={{ width: `${progressValue}%` }}
+          transition={{ 
+            duration: 1.2,
+            delay: 0.5 + (index * 0.1),
+            ease: [0.25, 0.46, 0.45, 0.94]
+          }}
+        >
+          {/* Shine effect on progress bar */}
+          <motion.div 
+            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent"
+            animate={{ x: ['-100%', '100%'] }}
+            transition={{ 
+              duration: 1.5,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: 1.5 + (index * 0.3)
+            }}
+          />
+          
+          {/* Pulse effect for active projects */}
+          {status === 'กำลังดำเนินการ' && (
+            <motion.div 
+              className="absolute right-0 top-0 w-1 h-full bg-white/60 rounded-full"
+              animate={{ 
+                opacity: [0.5, 1, 0.5],
+                scale: [1, 1.2, 1]
+              }}
+              transition={{ 
+                duration: 1.5,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            />
+          )}
+        </motion.div>
+      </div>
+    </motion.div>
+  );
+}
+
+// Stats Item Compact Component for 3 Column Grid
+interface StatsItemCompactProps {
+  icon: React.ReactNode;
+  label: string;
+  value: number;
+  color: string;
+}
+
+function StatsItemCompact({ icon, label, value, color }: StatsItemCompactProps) {
+  return (
+    <div className="flex items-center space-x-3 p-3 bg-slate-50 rounded-lg hover:bg-slate-100 transition-colors">
+      <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${color}`}>
+        {icon}
+      </div>
+      <div>
+        <div className="text-lg font-semibold text-slate-900">{value}</div>
+        <div className="text-xs text-slate-600">{label}</div>
+      </div>
+    </div>
+  );
+}
+
 export default function ProjectCard({ project, onClick, index = 0 }: ProjectCardProps) {
   const getCoverColor = (status: Project['status']) => {
     switch (status) {
@@ -75,7 +233,7 @@ export default function ProjectCard({ project, onClick, index = 0 }: ProjectCard
   return (
     <motion.div 
       className="bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer overflow-hidden group"
-      onClick={() => onClick(project)}
+      onClick={() => onClick?.(project)}
       initial={{ opacity: 0, y: 20, scale: 0.9 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, y: -20, scale: 0.9 }}
@@ -87,7 +245,7 @@ export default function ProjectCard({ project, onClick, index = 0 }: ProjectCard
       layout
     >
       {/* Mini Cover Header */}
-      <div className={`relative h-20 ${getCoverColor(project.status)} overflow-hidden`}>
+      <div className={`relative h-28 ${getCoverColor(project.status)} overflow-hidden`}>
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-15">
           <svg className="w-full h-full" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
@@ -103,13 +261,18 @@ export default function ProjectCard({ project, onClick, index = 0 }: ProjectCard
         </div>
 
         {/* Content Overlay */}
-        <div className="absolute inset-0 p-4 flex flex-col justify-center">
-          {/* Last Updated - Bottom Right */}
-          <div className="absolute bottom-3 right-3">
-            <div className="text-white text-xs opacity-75">
+        <div className="absolute inset-0 p-4 flex flex-col justify-center items-center text-center">
+          {/* Project Title - Center */}
+          <h3 className="text-lg font-bold text-white leading-tight tracking-wide drop-shadow-lg line-clamp-2 group-hover:text-white/90 transition-colors">
+            {project.title}
+          </h3>
+          
+          {/* Last Updated - Absolute Bottom Right */}
+          {/* <div className="absolute bottom-3 right-3">
+            <div className="text-white/80 text-xs font-medium bg-white/10 px-2 py-1 rounded-full backdrop-blur-sm">
               {project.lastUpdated}
             </div>
-          </div>
+          </div> */}
         </div>
 
         {/* Shine Effect */}
@@ -120,20 +283,25 @@ export default function ProjectCard({ project, onClick, index = 0 }: ProjectCard
       </div>
 
       <div className="p-5">
-        {/* Project Title & Description */}
+        {/* Project Description & Progress */}
         <div className="mb-5">
-          <h3 className="text-lg font-semibold text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-1 mb-2">
-            {project.title}
-          </h3>
-          <p className="text-sm text-slate-600 leading-relaxed line-clamp-2">
+          <p className="text-sm text-slate-600 leading-relaxed line-clamp-2 mb-4">
             {project.description}
           </p>
+          
+          {/* Progress Bar */}
+          <ProgressBar 
+            schedules={project.schedules}
+            subjects={project.subjects} 
+            status={project.status}
+            index={index}
+          />
         </div>
 
-        {/* Stats Grid - 2x2 Layout */}
+        {/* Stats Grid - 3 Column Layout */}
         <div className="mb-5">
           <h4 className="text-xs font-medium text-slate-500 uppercase tracking-wider mb-3">สถิติโครงการ</h4>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-3 gap-3">
             <StatsItemCompact
               icon={
                 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
@@ -163,16 +331,6 @@ export default function ProjectCard({ project, onClick, index = 0 }: ProjectCard
               label="ความขัดแย้ง"
               value={project.conflicts}
               color={project.conflicts > 0 ? "text-red-600 bg-red-50" : "text-slate-600 bg-slate-50"}
-            />
-            <StatsItemCompact
-              icon={
-                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd"/>
-                </svg>
-              }
-              label="สมาชิก"
-              value={project.members.length}
-              color="text-purple-600 bg-purple-50"
             />
           </div>
         </div>
@@ -256,27 +414,5 @@ export default function ProjectCard({ project, onClick, index = 0 }: ProjectCard
         </div>
       </div>
     </motion.div>
-  );
-}
-
-// Stats Item Compact Component for 2x2 Grid
-interface StatsItemCompactProps {
-  icon: React.ReactNode;
-  label: string;
-  value: number;
-  color: string;
-}
-
-function StatsItemCompact({ icon, label, value, color }: StatsItemCompactProps) {
-  return (
-    <div className="flex items-center space-x-3 p-3 bg-slate-50 rounded-lg hover:bg-slate-100 transition-colors">
-      <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${color}`}>
-        {icon}
-      </div>
-      <div>
-        <div className="text-lg font-semibold text-slate-900">{value}</div>
-        <div className="text-xs text-slate-600">{label}</div>
-      </div>
-    </div>
   );
 }
