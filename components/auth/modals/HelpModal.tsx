@@ -18,119 +18,337 @@ export default function HelpModal({ isOpen, onClose }: HelpModalProps) {
       isOpen={isOpen}
       onClose={onClose}
       title="ศูนย์ช่วยเหลือ"
-      subtitle="ข้อมูลการติดต่อและการใช้งาน"
+      subtitle="คู่มือการใช้งานและการติดต่อ"
       icon={icon}
       iconBgColor="bg-blue-100"
     >
       <motion.div 
-        className="space-y-6"
+        className="space-y-8 text-gray-700 leading-relaxed"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.1 }}
       >
-        {/* Login Help */}
+        
+        {/* Introduction */}
         <motion.div 
-          className="p-6 bg-blue-50 border border-blue-200 rounded-lg"
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          whileHover={{ scale: 1.02 }}
         >
-          <div className="flex items-start space-x-4">
-            <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
-              <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11.707 4.707a1 1 0 00-1.414-1.414L10 9.586 8.707 8.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
-              </svg>
-            </div>
+          <p className="text-lg text-gray-800 leading-relaxed">
+            ยินดีต้อนรับสู่ระบบจัดการตารางเรียนตารางสอน สถาบันเทคโนโลยีพระจอมเกล้าเจ้าคุณทหารลาดกระบัง 
+            หากคุณมีปัญหาหรือต้องการความช่วยเหลือ โปรดดูข้อมูลด้านล่างหรือติดต่อทีมงานของเรา
+          </p>
+        </motion.div>
+
+        {/* Section 1: Getting Started */}
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+        >
+          <h3 className="text-xl font-semibold text-gray-900 mb-4 border-b border-gray-200 pb-2">
+            1. การเริ่มต้นใช้งาน
+          </h3>
+          
+          <div className="space-y-4">
             <div>
-              <h4 className="font-semibold text-gray-800 mb-2 text-lg">การเข้าสู่ระบบ</h4>
-              <p className="text-gray-600 leading-relaxed">ใช้บัญชี Google ของมหาวิทยาลัยในการเข้าสู่ระบบ หากมีปัญหาให้ติดต่อเจ้าหน้าที่ IT</p>
+              <h4 className="font-semibold text-gray-800 mb-2">การเข้าสู่ระบบครั้งแรก</h4>
+              <ol className="list-decimal list-inside space-y-2 ml-4 text-gray-600">
+                <li>คลิกปุ่ม "เข้าสู่ระบบด้วย Google" หน้าแรกของระบบ</li>
+                <li>ใช้บัญชี Google ของมหาวิทยาลัย (@kmitl.ac.th) ในการเข้าสู่ระบบ</li>
+                <li>รอให้ระบบยืนยันตัวตนและสิทธิการเข้าถึง</li>
+                <li>หากเป็นการใช้งานครั้งแรก ระบบจะสร้างโปรไฟล์ให้อัตโนมัติ</li>
+              </ol>
+            </div>
+
+            <div>
+              <h4 className="font-semibold text-gray-800 mb-2">การตั้งค่าเบื้องต้น</h4>
+              <ul className="list-disc list-inside space-y-1 text-gray-600 ml-4">
+                <li>ตรวจสอบข้อมูลส่วนตัวในหน้าโปรไฟล์</li>
+                <li>ตั้งค่าการแจ้งเตือนตามความต้องการ</li>
+                <li>ทำความเข้าใจกับเมนูและฟังก์ชันต่างๆ</li>
+                <li>ทดลองสร้างตารางเรียนหรือตารางสอนตัวอย่าง</li>
+              </ul>
             </div>
           </div>
-        </motion.div>
-        
-        {/* Contact Information */}
-        <div className="space-y-4">
-          <h4 className="font-semibold text-gray-800 flex items-center space-x-3 text-lg">
-            <svg className="w-6 h-6 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
-              <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
-            </svg>
-            <span>ติดต่อเจ้าหน้าที่</span>
-          </h4>
+        </motion.section>
+
+        {/* Section 2: Main Features */}
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+        >
+          <h3 className="text-xl font-semibold text-gray-900 mb-4 border-b border-gray-200 pb-2">
+            2. ฟังก์ชันหลักของระบบ
+          </h3>
           
-          <motion.div 
-            className="grid gap-4"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.4, staggerChildren: 0.1 }}
-          >
-            <ContactItem
-              icon={
-                <svg className="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
-                  <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
-                </svg>
-              }
-              iconBg="bg-green-100"
-              title="อีเมล์"
-              value="it-support@kmitl.ac.th"
-              delay={0.5}
-            />
-            
-            <ContactItem
-              icon={
-                <svg className="w-5 h-5 text-orange-600" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
-                </svg>
-              }
-              iconBg="bg-orange-100"
-              title="โทรศัพท์"
-              value="02-329-8000 ต่อ 6900"
-              delay={0.6}
-            />
-            
-            <ContactItem
-              icon={
-                <svg className="w-5 h-5 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd"/>
-                </svg>
-              }
-              iconBg="bg-purple-100"
-              title="เวลาทำการ"
-              value="จันทร์ - ศุกร์: 08:30 - 16:30 น."
-              delay={0.7}
-            />
-          </motion.div>
-        </div>
+          <div className="space-y-4">
+            <div>
+              <h4 className="font-semibold text-gray-800 mb-2">สำหรับนักศึกษา</h4>
+              <ul className="list-disc list-inside space-y-1 text-gray-600 ml-4">
+                <li>ดูตารางเรียนส่วนตัว</li>
+                <li>ค้นหาและดูตารางของรายวิชาต่างๆ</li>
+                <li>ตรวจสอบการเปลี่ยนแปลงตารางเรียน</li>
+                <li>ส่งออกตารางเรียนเป็นไฟล์ PDF หรือรูปภาพ</li>
+                <li>รับการแจ้งเตือนเมื่อมีการเปลี่ยนแปลงตารางเรียน</li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="font-semibold text-gray-800 mb-2">สำหรับอาจารย์และเจ้าหน้าที่</h4>
+              <ul className="list-disc list-inside space-y-1 text-gray-600 ml-4">
+                <li>สร้างและจัดการตารางสอน</li>
+                <li>กำหนดเวลาและสถานที่เรียน</li>
+                <li>จัดการข้อมูลรายวิชาและหลักสูตร</li>
+                <li>ตรวจสอบความขัดแย้งของตารางเวลา</li>
+                <li>สร้างรายงานและสถิติการใช้ห้องเรียน</li>
+                <li>ส่งการแจ้งเตือนไปยังนักศึกษา</li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="font-semibold text-gray-800 mb-2">ฟีเจอร์ทั่วไป</h4>
+              <ul className="list-disc list-inside space-y-1 text-gray-600 ml-4">
+                <li>ค้นหาข้อมูลด้วยตัวกรองต่างๆ</li>
+                <li>การซิงค์ข้อมูลแบบเรียลไทม์</li>
+                <li>รองรับการใช้งานบนอุปกรณ์มือถือ</li>
+                <li>ระบบสำรองข้อมูลอัตโนมัติ</li>
+              </ul>
+            </div>
+          </div>
+        </motion.section>
+
+        {/* Section 3: Troubleshooting */}
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+        >
+          <h3 className="text-xl font-semibold text-gray-900 mb-4 border-b border-gray-200 pb-2">
+            3. การแก้ไขปัญหาเบื้องต้น
+          </h3>
+          
+          <div className="space-y-4">
+            <div>
+              <h4 className="font-semibold text-gray-800 mb-2">ปัญหาการเข้าสู่ระบบ</h4>
+              <div className="space-y-3 ml-4">
+                <div>
+                  <p className="font-medium text-gray-700">ไม่สามารถเข้าสู่ระบบได้</p>
+                  <ul className="list-disc list-inside text-sm text-gray-600 ml-4 mt-1">
+                    <li>ตรวจสอบว่าใช้บัญชี Google ของมหาวิทยาลัย (@kmitl.ac.th)</li>
+                    <li>ล้างแคชและคุกกี้ของเบราว์เซอร์</li>
+                    <li>ปิดการใช้ Ad Blocker ชั่วคราว</li>
+                    <li>ลองใช้เบราว์เซอร์อื่นหรือโหมดไม่เก็บประวัติ</li>
+                  </ul>
+                </div>
+                
+                <div>
+                  <p className="font-medium text-gray-700">แสดงข้อความ "Access Denied"</p>
+                  <ul className="list-disc list-inside text-sm text-gray-600 ml-4 mt-1">
+                    <li>บัญชีของคุณอาจยังไม่ได้รับสิทธิ์การเข้าถึง</li>
+                    <li>ติดต่อเจ้าหน้าที่เพื่อขอเพิ่มสิทธิ์</li>
+                    <li>ตรวจสอบสถานะการเป็นนักศึกษาหรือเจ้าหน้าที่</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h4 className="font-semibold text-gray-800 mb-2">ปัญหาการใช้งาน</h4>
+              <div className="space-y-3 ml-4">
+                <div>
+                  <p className="font-medium text-gray-700">ข้อมูลไม่อัปเดต</p>
+                  <ul className="list-disc list-inside text-sm text-gray-600 ml-4 mt-1">
+                    <li>รีเฟรชหน้าเว็บ (F5 หรือ Ctrl+R)</li>
+                    <li>ออกจากระบบแล้วเข้าใหม่</li>
+                    <li>ตรวจสอบการเชื่อมต่ออินเทอร์เน็ต</li>
+                  </ul>
+                </div>
+                
+                <div>
+                  <p className="font-medium text-gray-700">ไม่สามารถส่งออกข้อมูลได้</p>
+                  <ul className="list-disc list-inside text-sm text-gray-600 ml-4 mt-1">
+                    <li>ตรวจสอบการตั้งค่าการดาวน์โหลดของเบราว์เซอร์</li>
+                    <li>อนุญาตให้เว็บไซต์สามารถดาวน์โหลดไฟล์ได้</li>
+                    <li>ลองใช้รูปแบบไฟล์อื่น (PDF, Excel, รูปภาพ)</li>
+                  </ul>
+                </div>
+
+                <div>
+                  <p className="font-medium text-gray-700">ระบบทำงานช้า</p>
+                  <ul className="list-disc list-inside text-sm text-gray-600 ml-4 mt-1">
+                    <li>ปิดแท็บเบราว์เซอร์อื่นที่ไม่จำเป็น</li>
+                    <li>ตรวจสอบความเร็วอินเทอร์เน็ต</li>
+                    <li>หลีกเลี่ยงการใช้งานในช่วงเวลาที่มีผู้ใช้มาก (8:00-10:00 น.)</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.section>
+
+        {/* Section 4: Browser Requirements */}
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+        >
+          <h3 className="text-xl font-semibold text-gray-900 mb-4 border-b border-gray-200 pb-2">
+            4. ข้อกำหนดของระบบ
+          </h3>
+          
+          <div className="space-y-4">
+            <div>
+              <h4 className="font-semibold text-gray-800 mb-2">เบราว์เซอร์ที่แนะนำ</h4>
+              <ul className="list-disc list-inside space-y-1 text-gray-600 ml-4">
+                <li><strong>Google Chrome</strong> เวอร์ชัน 90 ขึ้นไป (แนะนำ)</li>
+                <li><strong>Mozilla Firefox</strong> เวอร์ชัน 88 ขึ้นไป</li>
+                <li><strong>Microsoft Edge</strong> เวอร์ชัน 90 ขึ้นไป</li>
+                <li><strong>Safari</strong> เวอร์ชัน 14 ขึ้นไป (สำหรับ macOS)</li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="font-semibold text-gray-800 mb-2">การตั้งค่าที่จำเป็น</h4>
+              <ul className="list-disc list-inside space-y-1 text-gray-600 ml-4">
+                <li>เปิดใช้งาน JavaScript</li>
+                <li>อนุญาตการใช้งานคุกกี้ (Cookies)</li>
+                <li>เปิดใช้งาน Pop-ups สำหรับเว็บไซต์นี้</li>
+                <li>ความละเอียดหน้าจอขั้นต่ำ 1024x768 พิกเซล</li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="font-semibold text-gray-800 mb-2">การเชื่อมต่ออินเทอร์เน็ต</h4>
+              <ul className="list-disc list-inside space-y-1 text-gray-600 ml-4">
+                <li>ความเร็วอินเทอร์เน็ตขั้นต่ำ 1 Mbps</li>
+                <li>การเชื่อมต่อที่เสถียรเพื่อป้องกันการสูญหายของข้อมูล</li>
+                <li>หลีกเลี่ยงการใช้ VPN หากไม่จำเป็น</li>
+              </ul>
+            </div>
+          </div>
+        </motion.section>
+
+        {/* Section 5: Contact Information */}
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.7 }}
+        >
+          <h3 className="text-xl font-semibold text-gray-900 mb-4 border-b border-gray-200 pb-2">
+            5. การติดต่อขอความช่วยเหลือ
+          </h3>
+          
+          <div className="space-y-4">
+            <div>
+              <h4 className="font-semibold text-gray-800 mb-2">ช่องทางการติดต่อ</h4>
+              <div className="bg-gray-50 p-4 rounded-lg">
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <p className="font-medium text-gray-800 mb-2">ศูนย์เทคโนโลยีสารสนเทศและการสื่อสาร</p>
+                    <div className="space-y-1 text-sm text-gray-600">
+                      <p><strong>โทรศัพท์:</strong> 02-329-8000 ต่อ 6900</p>
+                      <p><strong>โทรสาร:</strong> 02-329-8323</p>
+                      <p><strong>อีเมล:</strong> it-support@kmitl.ac.th</p>
+                    </div>
+                  </div>
+                  <div>
+                    <p className="font-medium text-gray-800 mb-2">ที่ตั้งสำนักงาน</p>
+                    <div className="space-y-1 text-sm text-gray-600">
+                      <p><strong>อาคาร:</strong> อาคาร 40 ชั้น 1</p>
+                      <p><strong>ห้อง:</strong> 40101-40110</p>
+                      <p><strong>แผนที่:</strong> <a href="#" className="text-blue-600 hover:underline">ดูแผนที่</a></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h4 className="font-semibold text-gray-800 mb-2">เวลาให้บริการ</h4>
+              <div className="ml-4">
+                <ul className="list-disc list-inside space-y-1 text-gray-600">
+                  <li><strong>วันจันทร์ - ศุกร์:</strong> 08:30 - 12:00 น. และ 13:00 - 16:30 น.</li>
+                  <li><strong>วันเสาร์ - อาทิตย์:</strong> ปิดให้บริการ</li>
+                  <li><strong>วันหยุดนักขัตฤกษ์:</strong> ปิดให้บริการ</li>
+                </ul>
+                <p className="text-sm text-gray-500 mt-2">
+                  *สำหรับปัญหาเร่งด่วนนอกเวลาทำการ สามารถส่งอีเมลได้ และจะได้รับการตอบกลับในวันทำการถัดไป
+                </p>
+              </div>
+            </div>
+
+            <div>
+              <h4 className="font-semibold text-gray-800 mb-2">การรายงานปัญหา</h4>
+              <div className="ml-4">
+                <p className="text-gray-600 mb-2">เมื่อติดต่อขอความช่วยเหลือ กรุณาแจ้งข้อมูลต่อไปนี้:</p>
+                <ol className="list-decimal list-inside space-y-1 text-gray-600">
+                  <li>ชื่อ-นามสกุล และรหัสประจำตัว</li>
+                  <li>รายละเอียดปัญหาที่เกิดขึ้น</li>
+                  <li>ขั้นตอนที่ทำก่อนเกิดปัญหา</li>
+                  <li>เบราว์เซอร์และระบบปฏิบัติการที่ใช้</li>
+                  <li>หน้าจอแสดงข้อผิดพลาด (Screenshot) หากมี</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </motion.section>
+
+        {/* Section 6: FAQ */}
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8 }}
+        >
+          <h3 className="text-xl font-semibold text-gray-900 mb-4 border-b border-gray-200 pb-2">
+            6. คำถามที่พบบ่อย (FAQ)
+          </h3>
+          
+          <div className="space-y-4">
+            <div>
+              <h4 className="font-semibold text-gray-800 mb-2">Q: ระบบใช้งานได้ตลอด 24 ชั่วโมงหรือไม่?</h4>
+              <p className="text-gray-600 ml-4">A: ระบบให้บริการตลอด 24 ชั่วโมง แต่อาจมีการปิดปรับปรุงในบางช่วงเวลา โดยจะแจ้งให้ทราบล่วงหน้า</p>
+            </div>
+
+            <div>
+              <h4 className="font-semibold text-gray-800 mb-2">Q: สามารถใช้งานบนมือถือได้หรือไม่?</h4>
+              <p className="text-gray-600 ml-4">A: ได้ ระบบรองรับการใช้งานบนอุปกรณ์มือถือและแท็บเล็ต แต่แนะนำให้ใช้งานบนคอมพิวเตอร์เพื่อประสบการณ์ที่ดีที่สุด</p>
+            </div>
+
+            <div>
+              <h4 className="font-semibold text-gray-800 mb-2">Q: หากลืมรหัสผ่าน Google จะทำอย่างไร?</h4>
+              <p className="text-gray-600 ml-4">A: ระบบใช้การเข้าสู่ระบบผ่าน Google SSO หากลืมรหัสผ่านให้ติดต่อศูนย์คอมพิวเตอร์ของมหาวิทยาลัย</p>
+            </div>
+
+            <div>
+              <h4 className="font-semibold text-gray-800 mb-2">Q: ข้อมูลในระบบปลอดภัยแค่ไหน?</h4>
+              <p className="text-gray-600 ml-4">A: ระบบใช้การเข้ารหัสข้อมูล SSL และมีการสำรองข้อมูลสม่ำเสมอ รวมถึงมีระบบควบคุมการเข้าถึงแบบหลายระดับ</p>
+            </div>
+
+            <div>
+              <h4 className="font-semibold text-gray-800 mb-2">Q: สามารถใช้งานร่วมกับปฏิทิน Google ได้หรือไม่?</h4>
+              <p className="text-gray-600 ml-4">A: ปัจจุบันยังไม่รองรับการซิงค์กับ Google Calendar แต่สามารถส่งออกข้อมูลเป็น .ics file เพื่อนำไปใช้ได้</p>
+            </div>
+          </div>
+        </motion.section>
+
+        {/* Footer */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.9 }}
+          className="pt-6 border-t border-gray-200 text-center"
+        >
+          <p className="text-sm text-gray-500">
+            หากไม่พบคำตอบที่ต้องการ กรุณาติดต่อทีมสนับสนุนของเราโดยตรง
+          </p>
+          <p className="text-sm text-gray-500 mt-2">
+            เราพร้อมให้ความช่วยเหลือและแก้ไขปัญหาให้คุณอย่างรวดเร็ว
+          </p>
+        </motion.div>
       </motion.div>
     </Modal>
-  );
-}
-
-// Contact Item Component
-function ContactItem({ icon, iconBg, title, value, delay }: {
-  icon: React.ReactNode;
-  iconBg: string;
-  title: string;
-  value: string;
-  delay: number;
-}) {
-  return (
-    <motion.div 
-      className="p-4 bg-white border border-slate-200 rounded-lg flex items-center space-x-4 transition-all hover:shadow-md hover:translate-y-[-2px]"
-      initial={{ opacity: 0, x: -20 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ delay }}
-      whileHover={{ x: 5 }}
-    >
-      <div className={`w-10 h-10 ${iconBg} rounded-lg flex items-center justify-center`}>
-        {icon}
-      </div>
-      <div>
-        <p className="font-medium text-gray-800">{title}</p>
-        <p className="text-blue-600">{value}</p>
-      </div>
-    </motion.div>
   );
 }

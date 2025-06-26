@@ -12,7 +12,7 @@ export default function GoogleLoginButton({ onClick, isLoading = false, classNam
     <motion.button 
       onClick={onClick}
       disabled={isLoading}
-      className={`w-full flex items-center justify-center space-x-4 rounded-lg bg-white border border-slate-200 min-h-[56px] text-base transition-all hover:border-blue-500 hover:shadow-lg disabled:opacity-70 disabled:cursor-not-allowed ${className}`}
+      className={`w-full flex items-center justify-center space-x-4 rounded-lg bg-white border border-slate-200 min-h-[56px] text-base transition-all hover:border-blue-500 hover:shadow-lg disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer ${className}`}
       whileHover={!isLoading ? { 
         scale: 1.02,
         boxShadow: "0 8px 20px -4px rgba(59, 130, 246, 0.25)"

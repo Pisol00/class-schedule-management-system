@@ -118,10 +118,19 @@ export default function LoginPage() {
               {showSuccess && <SuccessAlert />}
             </AnimatePresence>
 
-            {/* Authentication Section */}
-            <motion.div variants={itemVariants}>
-              <GoogleLoginButton onClick={handleGoogleLogin} isLoading={isLoading} />
-            </motion.div>
+            {/* Authentication Section - ซ่อนปุ่มเมื่อ showSuccess เป็น true */}
+            <AnimatePresence>
+              {!showSuccess && (
+                <motion.div 
+                  variants={itemVariants}
+                  initial={{ opacity: 1 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <GoogleLoginButton onClick={handleGoogleLogin} isLoading={isLoading} />
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             {/* Footer Section */}
             <motion.div className="footer-section" variants={itemVariants}>
@@ -242,10 +251,10 @@ function SuccessAlert() {
             transition={{ delay: 0.2 }}
           >
             <p className="font-semibold text-green-900 mb-1">เข้าสู่ระบบสำเร็จ!</p>
-            <p className="text-sm text-green-700 flex items-center space-x-2">
+            <div className="text-sm text-green-700 flex items-center space-x-2">
               <span>กำลังนำคุณไปยังหน้าหลัก</span>
               <LoadingDots />
-            </p>
+            </div>
           </motion.div>
         </div>
       </div>
@@ -279,7 +288,7 @@ function FooterButton({ onClick, icon, label }: { onClick: () => void; icon: Rea
   return (
     <motion.button 
       onClick={onClick}
-      className="footer-button flex items-center space-x-3 text-slate-600 hover:text-blue-600 transition-all duration-300 group"
+      className="footer-button flex items-center space-x-3 text-slate-600 hover:text-blue-600 transition-all duration-300 group cursor-pointer"
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
     >

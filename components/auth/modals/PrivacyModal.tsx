@@ -23,115 +23,271 @@ export default function PrivacyModal({ isOpen, onClose }: PrivacyModalProps) {
       iconBgColor="bg-green-100"
     >
       <motion.div 
-        className="space-y-6"
+        className="space-y-8 text-gray-700 leading-relaxed"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.1 }}
       >
-        {/* Data Collection */}
-        <PolicySection
-          icon={
-            <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-            </svg>
-          }
-          iconBg="bg-blue-500"
-          title="การเก็บรวบรวมข้อมูล"
-          description="เราเก็บรวบรวมข้อมูลที่จำเป็นสำหรับการให้บริการระบบการเรียนการสอนเท่านั้น"
-          delay={0.3}
-        />
         
-        {/* Data Usage */}
+        {/* Introduction */}
         <motion.div 
-          className="p-6 bg-blue-50 border border-blue-200 rounded-lg"
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.4 }}
-          whileHover={{ scale: 1.02 }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
         >
-          <div className="flex items-start space-x-4">
-            <div className="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
-              <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M3 4a1 1 0 011-1h4a1 1 0 010 2H6.414l2.293 2.293a1 1 0 01-1.414 1.414L5 6.414V8a1 1 0 01-2 0V4zm9 1a1 1 0 010-2h4a1 1 0 011 1v4a1 1 0 01-2 0V6.414l-2.293 2.293a1 1 0 11-1.414-1.414L13.586 5H12zm-9 7a1 1 0 012 0v1.586l2.293-2.293a1 1 0 111.414 1.414L6.414 15H8a1 1 0 010 2H4a1 1 0 01-1-1v-4zm13-1a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 010-2h1.586l-2.293-2.293a1 1 0 111.414-1.414L15.586 13H14a1 1 0 01-1-1z" clipRule="evenodd"/>
-              </svg>
+          <p className="text-lg text-gray-800 leading-relaxed">
+            สถาบันเทคโนโลยีพระจอมเกล้าเจ้าคุณทหารลาดกระบัง ("สถาบัน" หรือ "เรา") ให้ความสำคัญกับการปกป้องข้อมูลส่วนบุคคลของคุณ 
+            และปฏิบัติตามพระราชบัญญัติคุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562 อย่างเคร่งครัด
+          </p>
+        </motion.div>
+
+        {/* Section 1: Data Collection */}
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+        >
+          <h3 className="text-xl font-semibold text-gray-900 mb-4 border-b border-gray-200 pb-2">
+            1. การเก็บรวบรวมข้อมูล
+          </h3>
+          
+          <p className="mb-4">
+            เราเก็บรวบรวมข้อมูลส่วนบุคคลของคุณในกรณีดังต่อไปนี้:
+          </p>
+
+          <div className="space-y-4 ml-4">
+            <div>
+              <h4 className="font-semibold text-gray-800 mb-2">ข้อมูลที่ได้รับจากบัญชี Google</h4>
+              <ul className="list-disc list-inside space-y-1 text-gray-600 ml-4">
+                <li>ชื่อ-นามสกุล</li>
+                <li>ที่อยู่อีเมลของมหาวิทยาลัย</li>
+                <li>รูปโปรไฟล์ (หากมี)</li>
+                <li>รหัสผู้ใช้ที่ไม่ซ้ำกัน (Unique ID)</li>
+              </ul>
             </div>
-            <div className="flex-1">
-              <h4 className="font-semibold text-gray-800 mb-3 text-lg">การใช้ข้อมูล</h4>
-              <p className="text-gray-600 mb-4">ข้อมูลของคุณจะถูกใช้เพื่อ:</p>
-              <div className="space-y-3">
-                <UsageItem text="การยืนยันตัวตนและการเข้าถึงระบบ" />
-                <UsageItem text="การจัดการข้อมูลการเรียนการสอน" />
-                <UsageItem text="การติดต่อสื่อสารที่เกี่ยวข้องกับการศึกษา" />
-              </div>
+
+            <div>
+              <h4 className="font-semibold text-gray-800 mb-2">ข้อมูลการใช้งานระบบ</h4>
+              <ul className="list-disc list-inside space-y-1 text-gray-600 ml-4">
+                <li>วันและเวลาในการเข้าสู่ระบบ</li>
+                <li>กิจกรรมที่ดำเนินการในระบบ</li>
+                <li>ข้อมูลการเข้าถึงหน้าต่างๆ ของระบบ</li>
+                <li>ที่อยู่ IP และข้อมูลเทคนิคเบื้องต้น</li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="font-semibold text-gray-800 mb-2">ข้อมูลทางการศึกษา</h4>
+              <ul className="list-disc list-inside space-y-1 text-gray-600 ml-4">
+                <li>ข้อมูลตารางเรียนและตารางสอน</li>
+                <li>รายวิชาที่เกี่ยวข้อง</li>
+                <li>การจัดตารางเวลาและการใช้งานระบบ</li>
+              </ul>
             </div>
           </div>
+        </motion.section>
+
+        {/* Section 2: Purpose of Use */}
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+        >
+          <h3 className="text-xl font-semibold text-gray-900 mb-4 border-b border-gray-200 pb-2">
+            2. วัตถุประสงค์ในการใช้ข้อมูล
+          </h3>
+          
+          <p className="mb-4">
+            เราใช้ข้อมูลส่วนบุคคลของคุณเพื่อวัตถุประสงค์ที่ชอบด้วยกฎหมายดังต่อไปนี้:
+          </p>
+
+          <ol className="list-decimal list-inside space-y-3 ml-4">
+            <li>
+              <strong>การยืนยันตัวตนและการควบคุมการเข้าถึง:</strong> เพื่อให้แน่ใจว่าเฉพาะผู้ที่ได้รับอนุญาตเท่านั้นที่สามารถเข้าถึงระบบได้
+            </li>
+            <li>
+              <strong>การจัดการระบบการเรียนการสอน:</strong> การสร้าง จัดการ และปรับปรุงตารางเรียนตารางสอน
+            </li>
+            <li>
+              <strong>การติดต่อสื่อสาร:</strong> แจ้งข่าวสาร การเปลี่ยนแปลง หรือข้อมูลที่เกี่ยวข้องกับการใช้งานระบบ
+            </li>
+            <li>
+              <strong>การรักษาความปลอดภัย:</strong> ตรวจสอบและป้องกันการใช้งานที่ไม่เหมาะสมหรือผิดกฎหมาย
+            </li>
+            <li>
+              <strong>การปรับปรุงและพัฒนา:</strong> วิเคราะห์การใช้งานเพื่อปรับปรุงประสิทธิภาพและการให้บริการ
+            </li>
+            <li>
+              <strong>การปฏิบัติตามกฎหมาย:</strong> เพื่อการปฏิบัติตามข้อกำหนดทางกฎหมายที่เกี่ยวข้อง
+            </li>
+          </ol>
+        </motion.section>
+
+        {/* Section 3: Data Sharing */}
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+        >
+          <h3 className="text-xl font-semibold text-gray-900 mb-4 border-b border-gray-200 pb-2">
+            3. การเปิดเผยข้อมูล
+          </h3>
+          
+          <p className="mb-4">
+            เราจะไม่เปิดเผยข้อมูลส่วนบุคคลของคุณแก่บุคคลที่สาม ยกเว้นในกรณีดังต่อไปนี้:
+          </p>
+
+          <ul className="list-disc list-inside space-y-2 ml-4">
+            <li>เมื่อได้รับความยินยอมจากคุณเป็นลายลักษณ์อักษร</li>
+            <li>เพื่อปฏิบัติตามคำสั่งศาล หรือกฎหมายที่เกี่ยวข้อง</li>
+            <li>เพื่อปกป้องสิทธิ ทรัพย์สิน หรือความปลอดภัยของสถาบัน นักศึกษา หรือบุคคลอื่น</li>
+            <li>การส่งต่อข้อมูลให้แก่หน่วยงานภายในสถาบันที่เกี่ยวข้องกับการศึกษาโดยตรง</li>
+          </ul>
+        </motion.section>
+
+        {/* Section 4: Data Security */}
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+        >
+          <h3 className="text-xl font-semibold text-gray-900 mb-4 border-b border-gray-200 pb-2">
+            4. การรักษาความปลอดภัยของข้อมูล
+          </h3>
+          
+          <p className="mb-4">
+            เราดำเนินมาตรการรักษาความปลอดภัยข้อมูลที่เหมาะสมและจำเป็น ดังนี้:
+          </p>
+
+          <div className="space-y-4 ml-4">
+            <div>
+              <h4 className="font-semibold text-gray-800 mb-2">มาตรการทางเทคนิค</h4>
+              <ul className="list-disc list-inside space-y-1 text-gray-600 ml-4">
+                <li>การเข้ารหัสข้อมูลด้วยมาตรฐาน SSL/TLS ในระหว่างการส่งข้อมูล</li>
+                <li>การเข้ารหัสข้อมูลในระบบฐานข้อมูล</li>
+                <li>ระบบการยืนยันตัวตนแบบหลายขั้นตอน (Multi-factor Authentication)</li>
+                <li>การติดตั้งและอัปเดตระบบความปลอดภัยอย่างสม่ำเสมอ</li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="font-semibold text-gray-800 mb-2">มาตรการทางการบริหาร</h4>
+              <ul className="list-disc list-inside space-y-1 text-gray-600 ml-4">
+                <li>การกำหนดสิทธิการเข้าถึงข้อมูลตามหน้าที่และความจำเป็น</li>
+                <li>การฝึกอบรมเจ้าหน้าที่เกี่ยวกับการคุ้มครองข้อมูลส่วนบุคคล</li>
+                <li>การสำรองข้อมูลและแผนการกู้คืนข้อมูลในกรณีฉุกเฉิน</li>
+                <li>การตรวจสอบและบันทึกการเข้าถึงระบบ</li>
+              </ul>
+            </div>
+          </div>
+        </motion.section>
+
+        {/* Section 5: Data Retention */}
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.7 }}
+        >
+          <h3 className="text-xl font-semibold text-gray-900 mb-4 border-b border-gray-200 pb-2">
+            5. ระยะเวลาการเก็บรักษาข้อมูล
+          </h3>
+          
+          <p className="mb-4">
+            เราจะเก็บรักษาข้อมูลส่วนบุคคลของคุณเท่าที่จำเป็นเพื่อบรรลุวัตถุประสงค์ตามที่ระบุไว้ หรือตามระยะเวลาที่กฎหมายกำหนด:
+          </p>
+
+          <ul className="list-disc list-inside space-y-2 ml-4">
+            <li><strong>ข้อมูลการใช้งานระบบ:</strong> 1 ปีนับจากวันที่สิ้นสุดการใช้งาน</li>
+            <li><strong>ข้อมูลการเรียนการสอน:</strong> ตลอดระยะเวลาการศึกษาและ 5 ปีหลังสำเร็จการศึกษา</li>
+            <li><strong>บันทึกการเข้าถึงระบบ:</strong> 2 ปีเพื่อวัตถุประสงค์ด้านความปลอดภัย</li>
+          </ul>
+
+          <p className="mt-4">
+            เมื่อสิ้นสุดระยะเวลาการเก็บรักษา เราจะทำลายหรือลบข้อมูลส่วนบุคคลของคุณอย่างปลอดภัย
+          </p>
+        </motion.section>
+
+        {/* Section 6: Your Rights */}
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8 }}
+        >
+          <h3 className="text-xl font-semibold text-gray-900 mb-4 border-b border-gray-200 pb-2">
+            6. สิทธิของเจ้าของข้อมูล
+          </h3>
+          
+          <p className="mb-4">
+            ตามพระราชบัญญัติคุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562 คุณมีสิทธิดังต่อไปนี้:
+          </p>
+
+          <ol className="list-decimal list-inside space-y-3 ml-4">
+            <li>
+              <strong>สิทธิในการเข้าถึงและขอสำเนาข้อมูล:</strong> ขอดูข้อมูลส่วนบุคคลที่เราเก็บรักษาไว้เกี่ยวกับคุณ
+            </li>
+            <li>
+              <strong>สิทธิในการขอแก้ไขข้อมูล:</strong> ขอให้แก้ไขข้อมูลที่ไม่ถูกต้อง ไม่เป็นปัจจุบัน หรือไม่สมบูรณ์
+            </li>
+            <li>
+              <strong>สิทธิในการขอลบข้อมูล:</strong> ขอให้ลบข้อมูลส่วนบุคคลในกรณีที่เหมาะสม
+            </li>
+            <li>
+              <strong>สิทธิในการขอระงับการใช้ข้อมูล:</strong> ขอให้หยุดการประมวลผลข้อมูลชั่วคราว
+            </li>
+            <li>
+              <strong>สิทธิในการคัดค้านการประมวลผล:</strong> คัดค้านการประมวลผลข้อมูลในกรณีที่กฎหมายอนุญาต
+            </li>
+            <li>
+              <strong>สิทธิในการขอให้โอนข้อมูล:</strong> ขอรับข้อมูลในรูปแบบที่สามารถอ่านได้ด้วยเครื่องจักร
+            </li>
+          </ol>
+
+          <p className="mt-4 text-gray-600">
+            หากคุณต้องการใช้สิทธิใดสิทธิหนึ่งข้างต้น กรุณาติดต่อเราตามช่องทางที่ระบุด้านล่าง
+          </p>
+        </motion.section>
+
+        {/* Contact Information */}
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.9 }}
+        >
+          <h3 className="text-xl font-semibold text-gray-900 mb-4 border-b border-gray-200 pb-2">
+            7. การติดต่อ
+          </h3>
+          
+          <p className="mb-4">
+            หากคุณมีคำถาม ข้อสงสัย หรือต้องการใช้สิทธิของคุณ กรุณาติดต่อ:
+          </p>
+
+          <div className="bg-gray-50 p-4 rounded-lg">
+            <div className="space-y-2">
+              <p><strong>หน่วยงาน:</strong> ศูนย์เทคโนโลยีสารสนเทศและการสื่อสาร</p>
+              <p><strong>ที่อยู่:</strong> สถาบันเทคโนโลยีพระจอมเกล้าเจ้าคุณทหารลาดกระบัง</p>
+              <p className="ml-16">1 ถนนฉลองกรุง เขตลาดกระบัง กรุงเทพมหานคร 10520</p>
+              <p><strong>โทรศัพท์:</strong> 02-329-8000 ต่อ 6900</p>
+              <p><strong>อีเมล:</strong> privacy@kmitl.ac.th</p>
+              <p><strong>เวลาทำการ:</strong> จันทร์ - ศุกร์ เวลา 08:30 - 16:30 น.</p>
+            </div>
+          </div>
+        </motion.section>
+
+        {/* Footer */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.0 }}
+          className="pt-6 border-t border-gray-200 text-center"
+        >
+          <p className="text-sm text-gray-500">
+            นโยบายความเป็นส่วนตัวฉบับนี้มีผลบังคับใช้ตั้งแต่วันที่ <strong>1 มกราคม พ.ศ. 2568</strong>
+          </p>
+          <p className="text-sm text-gray-500 mt-2">
+            เราขอสงวนสิทธิ์ในการปรับปรุงหรือเปลี่ยนแปลงนโยบายนี้ โดยจะแจ้งให้คุณทราบล่วงหน้าผ่านระบบหรือช่องทางการสื่อสารอื่น
+          </p>
         </motion.div>
-        
-        {/* Security */}
-        <PolicySection
-          icon={
-            <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd"/>
-            </svg>
-          }
-          iconBg="bg-green-500"
-          title="ความปลอดภัย"
-          description="เราใช้มาตรการรักษาความปลอดภัยระดับสถาบันการศึกษาในการปกป้องข้อมูลของคุณ"
-          delay={0.5}
-        />
-        
-        {/* User Rights */}
-        <PolicySection
-          icon={
-            <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd"/>
-            </svg>
-          }
-          iconBg="bg-orange-500"
-          title="สิทธิของผู้ใช้"
-          description="คุณมีสิทธิในการขอเข้าถึง แก้ไข หรือลบข้อมูลส่วนบุคคลของคุณได้"
-          delay={0.6}
-        />
       </motion.div>
     </Modal>
-  );
-}
-
-// Policy Section Component
-function PolicySection({ icon, iconBg, title, description, delay }: {
-  icon: React.ReactNode;
-  iconBg: string;
-  title: string;
-  description: string;
-  delay: number;
-}) {
-  return (
-    <motion.div 
-      className="p-6 bg-blue-50 border border-blue-200 rounded-lg"
-      initial={{ opacity: 0, x: -20 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ delay }}
-      whileHover={{ scale: 1.02 }}
-    >
-      <div className="flex items-start space-x-4">
-        <div className={`w-10 h-10 ${iconBg} rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5`}>
-          {icon}
-        </div>
-        <div>
-          <h4 className="font-semibold text-gray-800 mb-3 text-lg">{title}</h4>
-          <p className="text-gray-600 leading-relaxed">{description}</p>
-        </div>
-      </div>
-    </motion.div>
-  );
-}
-
-// Usage Item Component
-function UsageItem({ text }: { text: string }) {
-  return (
-    <div className="flex items-start space-x-3">
-      <div className="w-2 h-2 bg-blue-400 rounded-full mt-2 flex-shrink-0" />
-      <p className="text-gray-600">{text}</p>
-    </div>
   );
 }
