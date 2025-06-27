@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import AnimatedBackground from '@/components/common/AnimatedBackground';
+import AnimatedBackground from '@/components/auth/AnimatedBackground';
 import GoogleLoginButton from '@/components/auth/GoogleLoginButton';
 import HelpModal from '@/components/auth/modals/HelpModal';
 import PrivacyModal from '@/components/auth/modals/PrivacyModal';
