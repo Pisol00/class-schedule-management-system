@@ -49,34 +49,30 @@ const ANIMATION_VARIANTS = {
   } as Variants
 };
 
-// Constants (Optimized for GPU Acceleration)
+// Constants (Simplified Animations)
 const FLOATING_ELEMENTS_CONFIG = {
   element1: {
-    className: "absolute top-1/4 left-1/4 w-64 h-64 bg-gradient-to-r from-blue-400/10 to-purple-400/10 rounded-full blur-3xl will-change-transform",
+    className: "absolute top-1/4 left-1/4 w-64 h-64 bg-gradient-to-r from-blue-400/8 to-purple-400/8 rounded-full blur-3xl",
     animation: {
-      scale: [1, 1.2, 1],
-      rotate: [0, 90, 0],
-      z: 0 // Force 3D rendering
+      scale: [1, 1.1, 1],
+      rotate: [0, 45, 0]
     },
     transition: {
-      duration: 20,
+      duration: 30,
       repeat: Infinity,
-      ease: "linear",
-      type: "tween" as const // More predictable than spring for long animations
+      ease: "linear"
     }
   },
   element2: {
-    className: "absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-r from-purple-400/10 to-pink-400/10 rounded-full blur-3xl will-change-transform",
+    className: "absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-r from-purple-400/8 to-pink-400/8 rounded-full blur-3xl",
     animation: {
-      scale: [1.2, 1, 1.2],
-      rotate: [90, 0, 90],
-      z: 0 // Force 3D rendering
+      scale: [1.1, 1, 1.1],
+      rotate: [45, 0, 45]
     },
     transition: {
-      duration: 25,
+      duration: 35,
       repeat: Infinity,
-      ease: "linear",
-      type: "tween" as const
+      ease: "linear"
     }
   }
 };
@@ -158,18 +154,7 @@ function FloatingElements() {
 function Logo() {
   return (
     <motion.div className="flex justify-center mb-8" variants={ANIMATION_VARIANTS.item}>
-      <motion.div 
-        className="relative will-change-transform"
-        whileHover={{ 
-          scale: 1.05,
-          transition: { duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }
-        }}
-        whileTap={{ 
-          scale: 0.95,
-          transition: { duration: 0.1, ease: [0.25, 0.1, 0.25, 1] }
-        }}
-        style={{ transform: 'translate3d(0,0,0)' }}
-      >
+      <div className="relative">
         <img 
           src="https://jlearn.it.kmitl.ac.th/_next/image/?url=%2Fit-kmitl.png&w=256&q=75" 
           alt="สถาบันเทคโนโลยีพระจอมเกล้าเจ้าคุณทหารลาดกระบัง" 
@@ -177,7 +162,7 @@ function Logo() {
           height={80}
           className="drop-shadow-sm"
         />
-      </motion.div>
+      </div>
     </motion.div>
   );
 }
@@ -223,7 +208,7 @@ function FooterNavigation({
         <FooterButton
           onClick={onHelpClick}
           icon={
-            <svg className="w-4 h-4 transition-transform duration-200 group-hover:scale-110" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
               <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd"/>
             </svg>
           }
@@ -236,7 +221,7 @@ function FooterNavigation({
         <FooterButton
           onClick={onPrivacyClick}
           icon={
-            <svg className="w-4 h-4 transition-transform duration-200 group-hover:scale-110" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
               <path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
             </svg>
           }
@@ -329,33 +314,30 @@ function SuccessAlert() {
   );
 }
 
-// Loading Dots Component (Performance Optimized)
+// Loading Dots Component (Simplified)
 function LoadingDots() {
   return (
     <div className="flex space-x-1" aria-label="กำลังโหลด">
-      {[0, 0.2, 0.4].map((delay, i) => (
+      {[0, 0.15, 0.3].map((delay, i) => (
         <motion.div
           key={i}
-          className="w-1 h-1 bg-green-600 rounded-full will-change-transform"
+          className="w-1 h-1 bg-green-600 rounded-full"
           animate={{ 
-            scale: [1, 1.2, 1],
-            opacity: [0.5, 1, 0.5]
+            opacity: [0.4, 1, 0.4]
           }}
           transition={{ 
-            duration: 1, 
+            duration: 1.2, 
             repeat: Infinity, 
             delay,
-            ease: "easeInOut",
-            type: "tween"
+            ease: "easeInOut"
           }}
-          style={{ transform: 'translate3d(0,0,0)' }}
         />
       ))}
     </div>
   );
 }
 
-// Footer Button Component (Performance Optimized)
+// Footer Button Component (Simplified)
 function FooterButton({ 
   onClick, 
   icon, 
@@ -368,23 +350,14 @@ function FooterButton({
   ariaLabel?: string;
 }) {
   return (
-    <motion.button 
+    <button 
       onClick={onClick}
-      className="flex items-center space-x-2 text-slate-600 hover:text-blue-600 transition-colors duration-200 group cursor-pointer text-sm font-medium will-change-transform"
-      whileHover={{ 
-        scale: 1.02,
-        transition: { duration: 0.15, ease: [0.25, 0.1, 0.25, 1] }
-      }}
-      whileTap={{ 
-        scale: 0.98,
-        transition: { duration: 0.1, ease: [0.25, 0.1, 0.25, 1] }
-      }}
-      style={{ transform: 'translate3d(0,0,0)' }}
+      className="flex items-center space-x-2 text-slate-600 hover:text-blue-600 transition-colors duration-200 cursor-pointer text-sm font-medium"
       aria-label={ariaLabel || label}
     >
       {icon}
       <span>{label}</span>
-    </motion.button>
+    </button>
   );
 }
 
