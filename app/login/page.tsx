@@ -1,29 +1,29 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
 import GoogleLoginButton from '@/components/auth/GoogleLoginButton';
 import HelpModal from '@/components/auth/modals/HelpModal';
 import PrivacyModal from '@/components/auth/modals/PrivacyModal';
 
-// Animation Variants (Optimized for Performance)
+// Animation Variants (Optimized for Performance and No Scroll)
 const ANIMATION_VARIANTS = {
   page: {
-    initial: { opacity: 0, y: 20 },
+    initial: { opacity: 0, y: 10 },
     animate: { 
       opacity: 1, 
       y: 0,
       transition: {
         duration: 0.6,
-        ease: [0.25, 0.1, 0.25, 1], // Custom cubic-bezier for smoothness
+        ease: [0.25, 0.1, 0.25, 1],
         staggerChildren: 0.1
       }
     },
-    exit: { opacity: 0, y: -20 }
+    exit: { opacity: 0, y: -10 }
   } as Variants,
   
   card: {
-    initial: { opacity: 0, scale: 0.96, y: 20 },
+    initial: { opacity: 0, scale: 0.98, y: 10 },
     animate: { 
       opacity: 1, 
       scale: 1, 
@@ -37,7 +37,7 @@ const ANIMATION_VARIANTS = {
   } as Variants,
   
   item: {
-    initial: { opacity: 0, y: 15 },
+    initial: { opacity: 0, y: 8 },
     animate: { 
       opacity: 1, 
       y: 0,
@@ -49,28 +49,28 @@ const ANIMATION_VARIANTS = {
   } as Variants
 };
 
-// Constants (Simplified Animations)
+// Constants (Constrained Animations to Prevent Overflow)
 const FLOATING_ELEMENTS_CONFIG = {
   element1: {
-    className: "absolute top-1/4 left-1/4 w-64 h-64 bg-gradient-to-r from-blue-400/8 to-purple-400/8 rounded-full blur-3xl",
+    className: "absolute top-1/4 left-1/4 w-48 h-48 bg-gradient-to-r from-blue-400/6 to-purple-400/6 rounded-full blur-3xl",
     animation: {
-      scale: [1, 1.1, 1],
-      rotate: [0, 45, 0]
+      scale: [1, 1.05, 1],
+      rotate: [0, 30, 0]
     },
     transition: {
-      duration: 30,
+      duration: 25,
       repeat: Infinity,
       ease: "linear"
     }
   },
   element2: {
-    className: "absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-r from-purple-400/8 to-pink-400/8 rounded-full blur-3xl",
+    className: "absolute bottom-1/4 right-1/4 w-64 h-64 bg-gradient-to-r from-purple-400/6 to-pink-400/6 rounded-full blur-3xl",
     animation: {
-      scale: [1.1, 1, 1.1],
-      rotate: [45, 0, 45]
+      scale: [1.05, 1, 1.05],
+      rotate: [30, 0, 30]
     },
     transition: {
-      duration: 35,
+      duration: 30,
       repeat: Infinity,
       ease: "linear"
     }
@@ -132,20 +132,50 @@ function useLoginState() {
   };
 }
 
-// Floating Elements Component
+// Custom Hook to Manage Body Scroll
+function useBodyScroll() {
+  useEffect(() => {
+    // Prevent body scroll on mount
+    const originalStyle = window.getComputedStyle(document.body).overflow;
+    document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
+    
+    return () => {
+      // Restore original scroll behavior on unmount
+      document.body.style.overflow = originalStyle;
+      document.documentElement.style.overflow = 'auto';
+    };
+  }, []);
+}
+
+// Floating Elements Component (Constrained to prevent scroll)
 function FloatingElements() {
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
-      <motion.div
-        className={FLOATING_ELEMENTS_CONFIG.element1.className}
-        animate={FLOATING_ELEMENTS_CONFIG.element1.animation}
-        transition={FLOATING_ELEMENTS_CONFIG.element1.transition}
-      />
-      <motion.div
-        className={FLOATING_ELEMENTS_CONFIG.element2.className}
-        animate={FLOATING_ELEMENTS_CONFIG.element2.animation}
-        transition={FLOATING_ELEMENTS_CONFIG.element2.transition}
-      />
+    <div 
+      className="fixed inset-0 overflow-hidden pointer-events-none" 
+      aria-hidden="true"
+      style={{ transform: 'translate3d(0,0,0)' }}
+    >
+      <div className="absolute inset-0 overflow-hidden">
+        <motion.div
+          className={FLOATING_ELEMENTS_CONFIG.element1.className}
+          animate={FLOATING_ELEMENTS_CONFIG.element1.animation}
+          transition={FLOATING_ELEMENTS_CONFIG.element1.transition}
+          style={{ 
+            transform: 'translate3d(0,0,0)',
+            willChange: 'transform'
+          }}
+        />
+        <motion.div
+          className={FLOATING_ELEMENTS_CONFIG.element2.className}
+          animate={FLOATING_ELEMENTS_CONFIG.element2.animation}
+          transition={FLOATING_ELEMENTS_CONFIG.element2.transition}
+          style={{ 
+            transform: 'translate3d(0,0,0)',
+            willChange: 'transform'
+          }}
+        />
+      </div>
     </div>
   );
 }
@@ -160,7 +190,7 @@ function Logo() {
           alt="สถาบันเทคโนโลยีพระจอมเกล้าเจ้าคุณทหารลาดกระบัง" 
           width={80}
           height={80}
-          className="drop-shadow-sm"
+          className="object-contain"
         />
       </div>
     </motion.div>
@@ -175,17 +205,6 @@ function Header() {
         <h1 className="text-3xl font-semibold text-gray-900 tracking-tight">
           ยินดีต้อนรับ
         </h1>
-        <motion.div
-          className="w-16 h-0.5 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto rounded-full will-change-transform"
-          initial={{ scaleX: 0 }}
-          animate={{ scaleX: 1 }}
-          transition={{ 
-            delay: 0.3, 
-            duration: 0.6,
-            ease: [0.25, 0.1, 0.25, 1]
-          }}
-          style={{ transform: 'translate3d(0,0,0)' }}
-        />
         <p className="text-gray-600 leading-relaxed">
           เข้าสู่ระบบเพื่อจัดตารางการสอน
         </p>
@@ -204,7 +223,7 @@ function FooterNavigation({
 }) {
   return (
     <div className="flex justify-center">
-      <nav className="flex items-center space-x-8 px-6 py-3 bg-slate-50 rounded-xl border border-slate-200">
+      <nav className="flex items-center space-x-8 px-6 py-3 bg-slate-50/80 rounded-xl border border-slate-200/80 backdrop-blur-sm">
         <FooterButton
           onClick={onHelpClick}
           icon={
@@ -254,9 +273,9 @@ function ErrorAlert({ message }: { message: string }) {
   return (
     <motion.div 
       className="bg-red-50 border border-red-200 text-red-800 rounded-lg p-4 mb-6"
-      initial={{ opacity: 0, y: -10 }}
+      initial={{ opacity: 0, y: -5 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -10 }}
+      exit={{ opacity: 0, y: -5 }}
       transition={{ duration: 0.3 }}
       role="alert"
       aria-live="polite"
@@ -284,9 +303,9 @@ function SuccessAlert() {
   return (
     <motion.div 
       className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6"
-      initial={{ opacity: 0, y: -10 }}
+      initial={{ opacity: 0, y: -5 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -10 }}
+      exit={{ opacity: 0, y: -5 }}
       transition={{ duration: 0.3 }}
       role="alert"
       aria-live="polite"
@@ -314,7 +333,7 @@ function SuccessAlert() {
   );
 }
 
-// Loading Dots Component (Simplified)
+// Loading Dots Component (Constrained)
 function LoadingDots() {
   return (
     <div className="flex space-x-1" aria-label="กำลังโหลด">
@@ -337,7 +356,7 @@ function LoadingDots() {
   );
 }
 
-// Footer Button Component (Simplified)
+// Footer Button Component
 function FooterButton({ 
   onClick, 
   icon, 
@@ -373,71 +392,94 @@ export default function LoginPage() {
     handleGoogleLogin
   } = useLoginState();
 
+  // Prevent body scroll
+  useBodyScroll();
+
   return (
-    <motion.div 
-      className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 flex items-center justify-center relative overflow-hidden font-sans will-change-transform"
-      variants={ANIMATION_VARIANTS.page}
-      initial="initial"
-      animate="animate"
-      exit="exit"
-      style={{ transform: 'translate3d(0,0,0)' }}
-    >
-      {/* Floating Elements */}
-      <FloatingElements />
-
-      {/* Main Container */}
-      <div className="w-full max-w-lg mx-auto relative z-10 px-6">
-        <motion.div 
-          className="bg-white/70 backdrop-blur-sm rounded-2xl shadow-xl border border-white/50 p-8 md:p-10 will-change-transform"
-          variants={ANIMATION_VARIANTS.card}
-          initial="initial"
-          animate="animate"
-          style={{ transform: 'translate3d(0,0,0)' }}
-        >
-          {/* Logo Section */}
-          <Logo />
-
-          {/* Header Section */}
-          <Header />
-
-          {/* Error Alert */}
-          <AnimatePresence mode="wait">
-            {error && <ErrorAlert message={error} />}
-          </AnimatePresence>
-
-          {/* Success Alert */}
-          <AnimatePresence mode="wait">
-            {showSuccess && <SuccessAlert />}
-          </AnimatePresence>
-
-          {/* Authentication Section */}
-          <AnimatePresence mode="wait">
-            {!showSuccess && (
-              <motion.div 
-                variants={ANIMATION_VARIANTS.item}
-                initial={{ opacity: 1 }}
-                exit={{ 
-                  opacity: 0, 
-                  y: -10,
-                  transition: { duration: 0.3 }
-                }}
-                className="mb-8"
-              >
-                <GoogleLoginButton onClick={handleGoogleLogin} isLoading={isLoading} />
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          {/* Footer Section */}
-          <motion.div className="space-y-6" variants={ANIMATION_VARIANTS.item}>
-            <FooterNavigation 
-              onHelpClick={() => updateState({ showHelpModal: true })}
-              onPrivacyClick={() => updateState({ showPrivacyModal: true })}
-            />
-            <InstitutionInfo />
-          </motion.div>
-        </motion.div>
+    <>
+      {/* Fixed Background Layer */}
+      <div className="fixed inset-0 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 overflow-hidden">
+        {/* Floating Elements */}
+        <FloatingElements />
       </div>
+
+      {/* Main Content Layer */}
+      <motion.div 
+        className="fixed inset-0 flex items-center justify-center overflow-y-auto overflow-x-hidden font-sans"
+        variants={ANIMATION_VARIANTS.page}
+        initial="initial"
+        animate="animate"
+        exit="exit"
+        style={{ 
+          scrollbarWidth: 'none',
+          msOverflowStyle: 'none'
+        }}
+      >
+        {/* Hide scrollbar for webkit browsers */}
+        <style jsx>{`
+          div::-webkit-scrollbar {
+            display: none;
+          }
+        `}</style>
+
+        {/* Content Container */}
+        <div className="w-full max-w-lg mx-auto relative z-10 px-6 py-8">
+          <motion.div 
+            className="bg-white/70 backdrop-blur-sm rounded-2xl shadow-xl border border-white/50 p-8 md:p-10 max-h-[90vh] overflow-y-auto"
+            variants={ANIMATION_VARIANTS.card}
+            initial="initial"
+            animate="animate"
+            style={{ 
+              transform: 'translate3d(0,0,0)',
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none'
+            }}
+          >
+            {/* Logo Section */}
+            <Logo />
+
+            {/* Header Section */}
+            <Header />
+
+            {/* Error Alert */}
+            <AnimatePresence mode="wait">
+              {error && <ErrorAlert message={error} />}
+            </AnimatePresence>
+
+            {/* Success Alert */}
+            <AnimatePresence mode="wait">
+              {showSuccess && <SuccessAlert />}
+            </AnimatePresence>
+
+            {/* Authentication Section */}
+            <AnimatePresence mode="wait">
+              {!showSuccess && (
+                <motion.div 
+                  variants={ANIMATION_VARIANTS.item}
+                  initial={{ opacity: 1 }}
+                  exit={{ 
+                    opacity: 0, 
+                    y: -5,
+                    transition: { duration: 0.3 }
+                  }}
+                  className="mb-8"
+                >
+                  <GoogleLoginButton onClick={handleGoogleLogin} isLoading={isLoading} />
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* Footer Section */}
+            <motion.div className="space-y-6" variants={ANIMATION_VARIANTS.item}>
+              <FooterNavigation 
+                onHelpClick={() => updateState({ showHelpModal: true })}
+                onPrivacyClick={() => updateState({ showPrivacyModal: true })}
+              />
+              <InstitutionInfo />
+            </motion.div>
+          </motion.div>
+        </div>
+      </motion.div>
 
       {/* Modals */}
       <HelpModal 
@@ -458,6 +500,6 @@ export default function LoginPage() {
           กรุณาเปิดใช้งาน JavaScript เพื่อใช้ระบบได้อย่างสมบูรณ์
         </div>
       </noscript>
-    </motion.div>
+    </>
   );
 }

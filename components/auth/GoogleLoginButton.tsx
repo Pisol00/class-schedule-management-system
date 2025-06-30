@@ -1,30 +1,31 @@
-import { motion } from 'framer-motion';
-
 interface GoogleLoginButtonProps {
   onClick: () => void;
   isLoading?: boolean;
   className?: string;
 }
 
-// Loading Spinner Component (Simplified)
+// Loading Spinner Component with CSS Animation
 function LoadingSpinner() {
   return (
     <div className="flex space-x-1">
-      {[0, 0.15, 0.3].map((delay, i) => (
-        <motion.div
-          key={i}
-          className="w-2 h-2 bg-blue-500 rounded-full"
-          animate={{ 
-            opacity: [0.4, 1, 0.4]
-          }}
-          transition={{ 
-            duration: 1.2, 
-            repeat: Infinity, 
-            delay,
-            ease: "easeInOut"
+      {[0, 1, 2].map((index) => (
+        <div
+          key={index}
+          className="w-2 h-2 bg-blue-500 rounded-full animate-pulse-dot"
+          style={{
+            animationDelay: `${index * 0.15}s`
           }}
         />
       ))}
+      <style jsx>{`
+        @keyframes pulse-dot {
+          0%, 100% { opacity: 0.4; }
+          50% { opacity: 1; }
+        }
+        .animate-pulse-dot {
+          animation: pulse-dot 1.2s ease-in-out infinite;
+        }
+      `}</style>
     </div>
   );
 }
@@ -38,6 +39,7 @@ export default function GoogleLoginButton({
     <button 
       onClick={onClick}
       disabled={isLoading}
+      aria-label={isLoading ? "กำลังเข้าสู่ระบบ" : "เข้าสู่ระบบด้วย Google"}
       className={`
         w-full flex items-center justify-center space-x-4 
         bg-white/80 backdrop-blur-sm 
@@ -46,6 +48,7 @@ export default function GoogleLoginButton({
         text-base font-medium text-gray-700
         shadow-lg shadow-black/5 hover:shadow-xl hover:shadow-blue-500/10
         transition-all duration-200 ease-out
+        focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:ring-offset-2
         disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer
         ${className}
       `}
@@ -59,7 +62,7 @@ export default function GoogleLoginButton({
           </>
         ) : (
           <>
-            {/* Google Logo (Static) */}
+            {/* Google Logo */}
             <div className="flex-shrink-0">
               <svg className="w-6 h-6" viewBox="0 0 24 24">
                 <path 
@@ -81,7 +84,7 @@ export default function GoogleLoginButton({
               </svg>
             </div>
             
-            {/* Text (Static) */}
+            {/* Text */}
             <span className="text-gray-700 font-medium text-lg select-none">
               เข้าสู่ระบบด้วย Google
             </span>
