@@ -23,7 +23,7 @@ interface NavItem {
   isNew?: boolean;
   isUpdated?: boolean;
   description?: string;
-  shortcut?: string;
+  isParentOnly?: boolean; // New property to indicate parent-only items
 }
 
 interface RecentItem {
@@ -42,7 +42,6 @@ const navigationItems: NavItem[] = [
     href: '',
     color: 'blue',
     description: 'แสดงสถิติและข้อมูลรวมของโครงการ',
-    shortcut: '⌘+H'
   },
   {
     id: 'subjects',
@@ -52,7 +51,6 @@ const navigationItems: NavItem[] = [
     badge: 247,
     color: 'emerald',
     description: 'จัดการรายวิชาและหลักสูตร',
-    shortcut: '⌘+S'
   },
   {
     id: 'instructors',
@@ -62,7 +60,6 @@ const navigationItems: NavItem[] = [
     badge: 85,
     color: 'purple',
     description: 'จัดการข้อมูลอาจารย์และการมอบหมายการสอน',
-    shortcut: '⌘+I'
   },
   {
     id: 'rooms',
@@ -72,7 +69,6 @@ const navigationItems: NavItem[] = [
     badge: 42,
     color: 'orange',
     description: 'จัดการห้องเรียนและสิ่งอำนวยความสะดวก',
-    shortcut: '⌘+R'
   },
   {
     id: 'students',
@@ -90,7 +86,6 @@ const navigationItems: NavItem[] = [
     href: '/schedules',
     color: 'rose',
     description: 'จัดทำและแก้ไขตารางเรียน-สอน',
-    shortcut: '⌘+T',
     subItems: [
       {
         id: 'schedule-builder',
@@ -150,9 +145,10 @@ const navigationItems: NavItem[] = [
     id: 'settings',
     name: 'ตั้งค่า',
     icon: 'M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z M15 12a3 3 0 11-6 0 3 3 0 016 0z',
-    href: '/settings',
+    href: '#', // Changed to # to prevent navigation
     color: 'slate',
     description: 'การตั้งค่าโครงการและระบบ',
+    isParentOnly: true, // Mark as parent-only item
     subItems: [
       {
         id: 'general',
@@ -161,24 +157,6 @@ const navigationItems: NavItem[] = [
         href: '/settings/general',
         color: 'slate',
         description: 'ข้อมูลพื้นฐานของโครงการ'
-      },
-      {
-        id: 'schedule',
-        name: 'ตั้งค่าตาราง',
-        icon: 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z',
-        href: '/settings/schedule',
-        color: 'slate',
-        description: 'กำหนดเวลาและรูปแบบตาราง'
-      },
-      {
-        id: 'notifications',
-        name: 'การแจ้งเตือน',
-        icon: 'M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9',
-        href: '/settings/notifications',
-        badge: '3',
-        color: 'slate',
-        description: 'ตั้งค่าการแจ้งเตือนและอีเมล',
-        isUpdated: true
       },
       {
         id: 'access',
@@ -190,20 +168,12 @@ const navigationItems: NavItem[] = [
       },
       {
         id: 'export',
-        name: 'นำเข้า/ส่งออก',
+        name: 'ส่งออกข้อมูล',
         icon: 'M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10',
         href: '/settings/export',
         color: 'slate',
         description: 'ตั้งค่าการนำเข้าและส่งออกข้อมูล'
       },
-      {
-        id: 'advanced',
-        name: 'ขั้นสูง',
-        icon: 'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z',
-        href: '/settings/advanced',
-        color: 'slate',
-        description: 'ตั้งค่าขั้นสูงและการดูแลระบบ'
-      }
     ]
   }
 ];
@@ -215,71 +185,34 @@ export default function ProjectSidebar({ project, collapsed, onToggleCollapse }:
   const [expandedItems, setExpandedItems] = useState<string[]>(['schedules', 'reports', 'settings']);
   const [searchQuery, setSearchQuery] = useState('');
   const [recentItems, setRecentItems] = useState<RecentItem[]>([]);
-  const [favoriteItems, setFavoriteItems] = useState<string[]>(['overview', 'schedule-builder']);
+  const [favoriteItems, setFavoriteItems] = useState<string[]>(['schedule-builder']);
   const [showSearch, setShowSearch] = useState(false);
   const [notifications, setNotifications] = useState(3);
 
   // Filter navigation items based on search
   const filteredItems = useMemo(() => {
     if (!searchQuery.trim()) return navigationItems;
-    
-    return navigationItems.filter(item => 
+
+    return navigationItems.filter(item =>
       item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.subItems?.some(sub => 
+      item.subItems?.some(sub =>
         sub.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         sub.description?.toLowerCase().includes(searchQuery.toLowerCase())
       )
     );
   }, [searchQuery]);
 
-  // Keyboard shortcuts
-  useEffect(() => {
-    const handleKeyPress = (e: KeyboardEvent) => {
-      if (e.metaKey || e.ctrlKey) {
-        switch (e.key) {
-          case 'k':
-            e.preventDefault();
-            setShowSearch(!showSearch);
-            break;
-          case 'h':
-            e.preventDefault();
-            window.location.href = getFullHref('');
-            break;
-          case 's':
-            e.preventDefault();
-            window.location.href = getFullHref('/subjects');
-            break;
-          case 'i':
-            e.preventDefault();
-            window.location.href = getFullHref('/instructors');
-            break;
-          case 'r':
-            e.preventDefault();
-            window.location.href = getFullHref('/rooms');
-            break;
-          case 't':
-            e.preventDefault();
-            window.location.href = getFullHref('/schedules');
-            break;
-        }
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyPress);
-    return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [showSearch]);
-
   const toggleExpanded = (itemId: string) => {
-    setExpandedItems(prev => 
-      prev.includes(itemId) 
+    setExpandedItems(prev =>
+      prev.includes(itemId)
         ? prev.filter(id => id !== itemId)
         : [...prev, itemId]
     );
   };
 
   const toggleFavorite = (itemId: string) => {
-    setFavoriteItems(prev => 
+    setFavoriteItems(prev =>
       prev.includes(itemId)
         ? prev.filter(id => id !== itemId)
         : [...prev, itemId]
@@ -287,11 +220,12 @@ export default function ProjectSidebar({ project, collapsed, onToggleCollapse }:
   };
 
   const getFullHref = (href: string) => {
-    if (href === '') return `/project/${projectId}`;
+    if (href === '' || href === '#') return `/project/${projectId}`;
     return `/project/${projectId}${href}`;
   };
 
   const isActiveRoute = (href: string) => {
+    if (href === '#') return false; // Parent-only items are never active
     const fullHref = getFullHref(href);
     if (href === '') {
       return pathname === `/project/${projectId}`;
@@ -324,11 +258,11 @@ export default function ProjectSidebar({ project, collapsed, onToggleCollapse }:
         <div className="absolute inset-0 bg-gradient-to-br from-blue-50/70 via-indigo-50/50 to-purple-50/30" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_2px_2px,rgba(59,130,246,0.08)_1px,transparent_0)] bg-[length:20px_20px]" />
         <div className="absolute inset-0 bg-gradient-to-t from-transparent via-white/20 to-transparent" />
-        
+
         <div className="relative">
           <div className="flex items-center justify-between mb-4">
             {!collapsed && (
-              <motion.div 
+              <motion.div
                 className="flex-1 min-w-0"
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -366,40 +300,25 @@ export default function ProjectSidebar({ project, collapsed, onToggleCollapse }:
                   {project.description}
                 </p>
 
-                {/* Progress Bar */}
-                <div className="mt-3">
-                  <div className="flex items-center justify-between text-xs text-slate-500 mb-1">
-                    <span>ความคืบหน้า</span>
-                    <span>{project.progress}%</span>
-                  </div>
-                  <div className="w-full bg-slate-200 rounded-full h-1.5 overflow-hidden">
-                    <motion.div
-                      className="h-1.5 bg-gradient-to-r from-blue-500 to-emerald-500 rounded-full shadow-sm"
-                      initial={{ width: 0 }}
-                      animate={{ width: `${project.progress}%` }}
-                      transition={{ duration: 1, ease: "easeOut" }}
-                    />
-                  </div>
-                </div>
               </motion.div>
             )}
-            
+
             {/* Enhanced Collapse Button */}
             <motion.button
               onClick={onToggleCollapse}
-              className="relative z-10 p-2.5 bg-white/90 backdrop-blur-sm border border-slate-200/60 rounded-xl hover:bg-white hover:border-slate-300 hover:shadow-lg text-slate-600 hover:text-slate-900 transition-all duration-300 group"
+              className="relative z-10 p-2.5 bg-white/90 backdrop-blur-sm border border-slate-200/60 rounded-xl hover:bg-white hover:border-slate-300 hover:shadow-lg text-slate-600 hover:text-slate-900 transition-all duration-300 group cursor-pointer"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <motion.svg 
-                className="w-4 h-4 group-hover:drop-shadow-sm" 
-                fill="none" 
-                stroke="currentColor" 
+              <motion.svg
+                className="w-4 h-4 group-hover:drop-shadow-sm"
+                fill="none"
+                stroke="currentColor"
                 viewBox="0 0 24 24"
                 animate={{ rotate: collapsed ? 180 : 0 }}
                 transition={{ duration: 0.4, ease: "easeInOut" }}
               >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7"/>
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
               </motion.svg>
             </motion.button>
           </div>
@@ -417,21 +336,21 @@ export default function ProjectSidebar({ project, collapsed, onToggleCollapse }:
           <div className="relative">
             <input
               type="text"
-              placeholder="ค้นหาเมนู... (⌘+K)"
+              placeholder="ค้นหาเมนู..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-white/80 backdrop-blur-sm border border-slate-200 rounded-xl text-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-300 transition-all duration-200"
+              className="w-full pl-10 pr-4 py-2.5 bg-white/80 backdrop-blur-sm border border-slate-200 rounded-xl text-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-300 transition-all duration-200 cursor-text"
             />
             <svg className="absolute left-3 top-3 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
             {searchQuery && (
               <button
                 onClick={() => setSearchQuery('')}
-                className="absolute right-3 top-3 w-4 h-4 text-slate-400 hover:text-slate-600"
+                className="absolute right-3 top-3 w-4 h-4 text-slate-400 hover:text-slate-600 cursor-pointer"
               >
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/>
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
             )}
@@ -453,8 +372,8 @@ export default function ProjectSidebar({ project, collapsed, onToggleCollapse }:
             </h3>
             <div className="space-y-1">
               {favoriteItems.map(itemId => {
-                const item = navigationItems.find(nav => nav.id === itemId) || 
-                           navigationItems.flatMap(nav => nav.subItems || []).find(sub => sub.id === itemId);
+                const item = navigationItems.find(nav => nav.id === itemId) ||
+                  navigationItems.flatMap(nav => nav.subItems || []).find(sub => sub.id === itemId);
                 if (!item) return null;
                 return (
                   <FavoriteNavItem
@@ -489,50 +408,22 @@ export default function ProjectSidebar({ project, collapsed, onToggleCollapse }:
           ))}
         </div>
 
-        {/* Quick Actions */}
-        {!collapsed && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-            className="mt-8 pt-6 border-t border-slate-200/60"
-          >
-            <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3 px-2">
-              การดำเนินการด่วน
-            </h3>
-            <div className="space-y-2">
-              <QuickActionButton
-                icon="M12 4v16m8-8H4"
-                label="สร้างตารางใหม่"
-                color="emerald"
-                href={getFullHref('/schedules/builder')}
-              />
-              <QuickActionButton
-                icon="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                label="ส่งออกรายงาน"
-                color="blue"
-                href={getFullHref('/reports')}
-              />
-            </div>
-          </motion.div>
-        )}
       </nav>
 
       {/* Enhanced Footer */}
       <div className="p-4 border-t border-slate-200/60 bg-gradient-to-t from-slate-50/50 to-transparent backdrop-blur-sm">
-        <Link 
+        <Link
           href="/"
-          className={`group flex items-center space-x-3 p-3 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-white/80 hover:shadow-lg transition-all duration-300 ${
-            collapsed ? 'justify-center' : ''
-          }`}
+          className={`group flex items-center space-x-3 p-3 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-white/80 hover:shadow-lg transition-all duration-300 cursor-pointer ${collapsed ? 'justify-center' : ''
+            }`}
         >
           <div className="p-1.5 bg-slate-100 rounded-lg group-hover:bg-blue-100 transition-colors duration-300">
             <svg className="w-4 h-4 group-hover:text-blue-600 transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
             </svg>
           </div>
           {!collapsed && (
-            <motion.span 
+            <motion.span
               className="font-medium text-sm group-hover:drop-shadow-sm"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -561,21 +452,22 @@ interface NavItemProps {
   index: number;
 }
 
-function NavItem({ 
-  item, 
-  collapsed, 
-  isActive, 
-  getFullHref, 
-  expandedItems, 
-  onToggleExpanded, 
+function NavItem({
+  item,
+  collapsed,
+  isActive,
+  getFullHref,
+  expandedItems,
+  onToggleExpanded,
   isActiveRoute,
   favoriteItems,
   onToggleFavorite,
-  index 
+  index
 }: NavItemProps) {
   const hasSubItems = item.subItems && item.subItems.length > 0;
   const isExpanded = expandedItems.includes(item.id);
   const isFavorite = favoriteItems.includes(item.id);
+  const isParentOnly = item.isParentOnly || false;
 
   const getItemColors = (color: string = 'blue', active: boolean = false) => {
     if (active) {
@@ -612,6 +504,13 @@ function NavItem({
     return colorMap[color as keyof typeof colorMap] || colorMap.blue;
   };
 
+  const handleItemClick = (e: React.MouseEvent) => {
+    if (isParentOnly && hasSubItems) {
+      e.preventDefault();
+      onToggleExpanded(item.id);
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, x: -20 }}
@@ -621,100 +520,125 @@ function NavItem({
     >
       {/* Main Item */}
       <div className="relative">
-        <Link
-          href={getFullHref(item.href)}
-          className={`flex items-center space-x-3 p-3.5 rounded-xl border transition-all duration-300 ${
-            getItemColors(item.color, isActive)
-          } ${isActive ? 'scale-[1.02] backdrop-blur-sm' : 'hover:scale-[1.01]'} ${
-            collapsed ? 'justify-center' : ''
-          }`}
-        >
-          <div className={`relative p-2 rounded-lg transition-all duration-300 ${
-            isActive ? 'bg-white/90 shadow-md backdrop-blur-sm' : 'bg-slate-100 group-hover:bg-white'
-          }`}>
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={item.icon}/>
-            </svg>
-            
-            {/* New/Updated Indicators */}
-            {item.isNew && (
-              <div className="absolute -top-1 -right-1 w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
-            )}
-            {item.isUpdated && (
-              <div className="absolute -top-1 -right-1 w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
-            )}
-          </div>
-          
-          {!collapsed && (
-            <>
-              <div className="flex-1">
-                <div className="flex items-center space-x-2">
-                  <span className="font-semibold text-sm">{item.name}</span>
-                  {item.shortcut && (
-                    <span className="text-xs text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded">
-                      {item.shortcut}
-                    </span>
+        {isParentOnly ? (
+          <button
+            onClick={handleItemClick}
+            className={`w-full flex items-center space-x-3 p-3.5 rounded-xl border transition-all duration-300 cursor-pointer ${getItemColors(item.color, isActive)
+              } ${isActive ? 'scale-[1.02] backdrop-blur-sm' : 'hover:scale-[1.01]'} ${collapsed ? 'justify-center' : ''
+              }`}
+          >
+            <div className={`relative p-2 rounded-lg transition-all duration-300 ${isActive ? 'bg-white/90 shadow-md backdrop-blur-sm' : 'bg-slate-100 group-hover:bg-white'
+              }`}>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={item.icon} />
+              </svg>
+
+              {/* New/Updated Indicators */}
+              {item.isNew && (
+                <div className="absolute -top-1 -right-1 w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
+              )}
+              {item.isUpdated && (
+                <div className="absolute -top-1 -right-1 w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
+              )}
+            </div>
+
+            {!collapsed && (
+              <>
+                <div className="flex-1 text-left">
+                  <div className="flex items-center space-x-2">
+                    <span className="font-semibold text-sm">{item.name}</span>
+                  </div>
+                  {item.description && !isActive && (
+                    <p className="text-xs text-slate-500 mt-0.5 line-clamp-1">
+                      {item.description}
+                    </p>
                   )}
                 </div>
-                {item.description && !isActive && (
-                  <p className="text-xs text-slate-500 mt-0.5 line-clamp-1">
-                    {item.description}
-                  </p>
-                )}
-              </div>
-              
-              <div className="flex items-center space-x-2">
-                {item.badge && (
-                  <motion.span
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    className={`text-xs px-2 py-1 rounded-full font-bold ${
-                      isActive ? getBadgeColors(item.color) : 'bg-slate-100 text-slate-600'
-                    } transition-all duration-300`}
-                  >
-                    {item.badge}
-                  </motion.span>
-                )}
-                
-                {/* Favorite Button */}
-                <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    onToggleFavorite(item.id);
-                  }}
-                  className="opacity-0 group-hover:opacity-100 p-1 hover:bg-yellow-100 rounded transition-all duration-200"
-                >
-                  <svg 
-                    className={`w-3 h-3 ${isFavorite ? 'text-yellow-500 fill-current' : 'text-slate-400'}`} 
-                    fill="none" 
-                    stroke="currentColor" 
-                    viewBox="0 0 24 24"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
-                  </svg>
-                </button>
-              </div>
-            </>
-          )}
-        </Link>
+
+                <div className="flex items-center space-x-2">
+                  {item.badge && (
+                    <motion.span
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      className={`text-xs px-2 py-1 rounded-full font-bold ${isActive ? getBadgeColors(item.color) : 'bg-slate-100 text-slate-600'
+                        } transition-all duration-300`}
+                    >
+                      {item.badge}
+                    </motion.span>
+                  )}
+                </div>
+              </>
+            )}
+          </button>
+        ) : (
+          <Link
+            href={getFullHref(item.href)}
+            className={`flex items-center space-x-3 p-3.5 rounded-xl border transition-all duration-300 cursor-pointer ${getItemColors(item.color, isActive)
+              } ${isActive ? 'scale-[1.02] backdrop-blur-sm' : 'hover:scale-[1.01]'} ${collapsed ? 'justify-center' : ''
+              }`}
+          >
+            <div className={`relative p-2 rounded-lg transition-all duration-300 ${isActive ? 'bg-white/90 shadow-md backdrop-blur-sm' : 'bg-slate-100 group-hover:bg-white'
+              }`}>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={item.icon} />
+              </svg>
+
+              {/* New/Updated Indicators */}
+              {item.isNew && (
+                <div className="absolute -top-1 -right-1 w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
+              )}
+              {item.isUpdated && (
+                <div className="absolute -top-1 -right-1 w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
+              )}
+            </div>
+
+            {!collapsed && (
+              <>
+                <div className="flex-1">
+                  <div className="flex items-center space-x-2">
+                    <span className="font-semibold text-sm">{item.name}</span>
+                  </div>
+                  {item.description && !isActive && (
+                    <p className="text-xs text-slate-500 mt-0.5 line-clamp-1">
+                      {item.description}
+                    </p>
+                  )}
+                </div>
+
+                <div className="flex items-center space-x-2">
+                  {item.badge && (
+                    <motion.span
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      className={`text-xs px-2 py-1 rounded-full font-bold ${isActive ? getBadgeColors(item.color) : 'bg-slate-100 text-slate-600'
+                        } transition-all duration-300`}
+                    >
+                      {item.badge}
+                    </motion.span>
+                  )}
+                </div>
+              </>
+            )}
+          </Link>
+        )}
 
         {/* Expand Button for Sub Items */}
         {hasSubItems && !collapsed && (
           <motion.button
             onClick={() => onToggleExpanded(item.id)}
-            className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1.5 hover:bg-slate-200 rounded-lg transition-all duration-200"
+            className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1.5 hover:bg-slate-200 rounded-lg transition-all duration-200 cursor-pointer"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
           >
-            <motion.svg 
-              className="w-4 h-4 text-slate-600" 
-              fill="none" 
-              stroke="currentColor" 
+            <motion.svg
+              className="w-4 h-4 text-slate-600"
+              fill="none"
+              stroke="currentColor"
               viewBox="0 0 24 24"
               animate={{ rotate: isExpanded ? 90 : 0 }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"/>
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
             </motion.svg>
           </motion.button>
         )}
@@ -740,17 +664,15 @@ function NavItem({
               >
                 <Link
                   href={getFullHref(subItem.href)}
-                  className={`flex items-center space-x-3 p-3 rounded-lg border transition-all duration-300 text-sm ${
-                    getItemColors(subItem.color, isActiveRoute(subItem.href))
-                  } ${isActiveRoute(subItem.href) ? 'shadow-lg backdrop-blur-sm' : ''}`}
+                  className={`flex items-center space-x-3 p-3 rounded-lg border transition-all duration-300 text-sm cursor-pointer hover:scale-[1.01] ${getItemColors(subItem.color, isActiveRoute(subItem.href))
+                    } ${isActiveRoute(subItem.href) ? 'shadow-lg backdrop-blur-sm' : ''}`}
                 >
-                  <div className={`relative p-1.5 rounded-md transition-all duration-300 ${
-                    isActiveRoute(subItem.href) ? 'bg-white/90 shadow-sm' : 'bg-slate-100 group-hover:bg-white'
-                  }`}>
+                  <div className={`relative p-1.5 rounded-md transition-all duration-300 ${isActiveRoute(subItem.href) ? 'bg-white/90 shadow-sm' : 'bg-slate-100 group-hover:bg-white'
+                    }`}>
                     <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={subItem.icon}/>
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={subItem.icon} />
                     </svg>
-                    
+
                     {/* Indicators */}
                     {subItem.isNew && (
                       <div className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
@@ -759,7 +681,7 @@ function NavItem({
                       <div className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-blue-500 rounded-full animate-pulse" />
                     )}
                   </div>
-                  
+
                   <div className="flex-1">
                     <span className="font-medium">{subItem.name}</span>
                     {subItem.description && !isActiveRoute(subItem.href) && (
@@ -768,14 +690,13 @@ function NavItem({
                       </p>
                     )}
                   </div>
-                  
+
                   {subItem.badge && (
                     <motion.span
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
-                      className={`text-xs px-1.5 py-0.5 rounded-md font-semibold ${
-                        isActiveRoute(subItem.href) ? getBadgeColors(subItem.color) : 'bg-slate-100 text-slate-600'
-                      } transition-all duration-300`}
+                      className={`text-xs px-1.5 py-0.5 rounded-md font-semibold ${isActiveRoute(subItem.href) ? getBadgeColors(subItem.color) : 'bg-slate-100 text-slate-600'
+                        } transition-all duration-300`}
                     >
                       {subItem.badge}
                     </motion.span>
@@ -789,13 +710,13 @@ function NavItem({
                     }}
                     className="opacity-0 group-hover:opacity-100 p-1 hover:bg-yellow-100 rounded transition-all duration-200"
                   >
-                    <svg 
-                      className={`w-3 h-3 ${favoriteItems.includes(subItem.id) ? 'text-yellow-500 fill-current' : 'text-slate-400'}`} 
-                      fill="none" 
-                      stroke="currentColor" 
+                    <svg
+                      className={`w-3 h-3 ${favoriteItems.includes(subItem.id) ? 'text-yellow-500 fill-current' : 'text-slate-400'}`}
+                      fill="none"
+                      stroke="currentColor"
                       viewBox="0 0 24 24"
                     >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
                     </svg>
                   </button>
                 </Link>
@@ -817,6 +738,9 @@ interface FavoriteNavItemProps {
 }
 
 function FavoriteNavItem({ item, isActive, getFullHref, onToggleFavorite }: FavoriteNavItemProps) {
+  // Don't show parent-only items in favorites
+  if (item.isParentOnly) return null;
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.9 }}
@@ -825,15 +749,14 @@ function FavoriteNavItem({ item, isActive, getFullHref, onToggleFavorite }: Favo
     >
       <Link
         href={getFullHref(item.href)}
-        className={`flex items-center space-x-3 p-2.5 rounded-lg border transition-all duration-200 ${
-          isActive 
-            ? 'bg-gradient-to-r from-yellow-50 to-amber-50 text-yellow-800 border-yellow-200 shadow-md' 
-            : 'text-slate-600 hover:bg-yellow-50 hover:border-yellow-200 border-transparent'
-        }`}
+        className={`flex items-center space-x-3 p-2.5 rounded-lg border transition-all duration-200 cursor-pointer ${isActive
+          ? 'bg-gradient-to-r from-yellow-50 to-amber-50 text-yellow-800 border-yellow-200 shadow-md'
+          : 'text-slate-600 hover:bg-yellow-50 hover:border-yellow-200 border-transparent'
+          }`}
       >
         <div className={`p-1.5 rounded ${isActive ? 'bg-yellow-100' : 'bg-slate-100 group-hover:bg-yellow-100'} transition-colors`}>
           <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={item.icon}/>
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={item.icon} />
           </svg>
         </div>
         <span className="text-sm font-medium flex-1">{item.name}</span>
@@ -842,45 +765,13 @@ function FavoriteNavItem({ item, isActive, getFullHref, onToggleFavorite }: Favo
             e.preventDefault();
             onToggleFavorite(item.id);
           }}
-          className="p-1 text-yellow-500 hover:bg-yellow-100 rounded transition-all duration-200"
+          className="p-1 text-yellow-500 hover:bg-yellow-100 rounded transition-all duration-200 cursor-pointer"
         >
           <svg className="w-3 h-3 fill-current" viewBox="0 0 24 24">
-            <path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
+            <path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
           </svg>
         </button>
       </Link>
     </motion.div>
-  );
-}
-
-// Quick Action Button Component
-interface QuickActionButtonProps {
-  icon: string;
-  label: string;
-  color: string;
-  href: string;
-}
-
-function QuickActionButton({ icon, label, color, href }: QuickActionButtonProps) {
-  const getButtonColors = (color: string) => {
-    const colorMap = {
-      emerald: 'bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border-emerald-200',
-      blue: 'bg-blue-50 hover:bg-blue-100 text-blue-700 border-blue-200'
-    };
-    return colorMap[color as keyof typeof colorMap] || colorMap.blue;
-  };
-
-  return (
-    <Link
-      href={href}
-      className={`flex items-center space-x-3 p-3 rounded-lg border transition-all duration-200 ${getButtonColors(color)} hover:shadow-md group`}
-    >
-      <div className="p-1.5 bg-white rounded-md shadow-sm group-hover:shadow-md transition-shadow">
-        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={icon}/>
-        </svg>
-      </div>
-      <span className="text-sm font-medium">{label}</span>
-    </Link>
   );
 }
